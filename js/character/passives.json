@@ -1,0 +1,592 @@
+{
+    "불꽃의갑옷": {
+        "name": "불꽃의갑옷",
+        "type": "passive",
+        "defence": "+3",
+        "power": "+2",
+        "grade" : "nomal",
+        "imagePath": "assets/item/불꽃의갑옷.png",
+        "activate" : false
+    },
+    "하얀장갑": {
+        "name": "하얀장갑",
+        "type": "passive",
+        "speed": "+4%",
+        "defence": "+1",
+        "grade" : "nomal",
+        "imagePath": "assets/item/하얀장갑.png",
+        "activate" : false
+    },
+    "칠흑의망토": {
+        "name": "칠흑의망토",
+        "type": "passive",
+        "speed": "+2%",
+        "critical": "+2%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/칠흑의망토.png",
+        "activate" : false
+    },
+    "바람의목걸이": {
+        "name": "바람의목걸이",
+        "type": "passive",
+        "power": "+1",
+        "speed": "+2%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/바람의목걸이.png",
+        "activate" : false
+    },
+    "혼돈의부적": {
+        "name": "혼돈의부적",
+        "type": "passive",
+        "avoidance": "+4%",
+        "maxHealth": "-3%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/혼돈의부적.png",
+        "activate" : false
+    },
+    "침묵의갑옷": {
+        "name": "침묵의갑옷",
+        "type": "passive",
+        "speed": "+3%",
+        "luck": "-5%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/침묵의갑옷.png",
+        "activate" : false
+    },
+    "얼음의왕관": {
+        "name": "얼음의왕관",
+        "type": "passive",
+        "speed": "+5%",
+        "power": "-4%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/얼음의왕관.png",
+        "activate" : false
+    },
+    "신속의장화": {
+        "name": "신속의장화",
+        "type": "passive",
+        "speed": "+4%",
+        "defence": "-3%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/신속의장화.png",
+        "activate" : false
+    },
+    "악마숭배자의가면": {
+        "name": "악마숭배자의가면",
+        "type": "passive",
+        "defence": "+3%",
+        "critical": "-4%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/악마숭배자의가면.png",
+        "activate" : false
+    },
+    "바람의흉터": {
+        "name": "바람의흉터",
+        "type": "passive",
+        "speed": "+4%",
+        "avoidance": "-3%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/바람의흉터.png",
+        "activate" : false
+    },
+    "구리반지": {
+        "name": "구리반지",
+        "type": "passive",
+        "maxHealth": "+4%",
+        "speed": "-3%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/구리반지.png",
+        "activate" : false
+    },
+    "강철머리보호대": {
+        "name": "강철머리보호대",
+        "type": "passive",
+        "defence": "+3%",
+        "critical": "-4%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/강철머리보호대.png",
+        "activate" : false
+    },
+    "냉동실에잠시넣은검": {
+        "name": "냉동실에잠시넣은검",
+        "type": "passive",
+        "avoidance": "+4%",
+        "speed": "-3%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/냉동실에잠시넣은검.png",
+        "activate" : false
+    },
+    "황금의지팡이": {
+        "name": "황금의지팡이",
+        "type": "passive",
+        "power": "+3%",
+        "speed": "-4%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/황금의지팡이.png",
+        "activate" : false
+    },
+    "암흑이섞인신발": {
+        "name": "암흑이섞인신발",
+        "type": "passive",
+        "maxHealth": "+5%",
+        "power": "-4%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/암흑이섞인신발.png",
+        "activate" : false
+    },
+    "불꽃의벽": {
+        "name": "불꽃의벽",
+        "type": "passive",
+        "avoidance": "+3%",
+        "speed": "-5%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/불꽃의벽.png",
+        "activate" : false
+    },
+    "이끼낀팔찌": {
+        "name": "이끼낀팔찌",
+        "type": "passive",
+        "defence": "+4%",
+        "maxHealth": "-3%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/이끼낀팔찌.png",
+        "activate" : false
+    },
+    "혼돈의반지": {
+        "name": "혼돈의반지",
+        "type": "passive",
+        "critical": "+5%",
+        "power": "-3%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/혼돈의반지.png",
+        "activate" : false
+    },
+    "신속의부적": {
+        "name": "신속의부적",
+        "type": "passive",
+        "speed": "+4%",
+        "avoidance": "-3%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/신속의부적.png",
+        "activate" : false
+    },
+    "녹슬어버린투구": {
+        "name": "녹슬어버린투구",
+        "type": "passive",
+        "maxHealth": "+3%",
+        "critical": "-4%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/녹슬어버린투구.png",
+        "activate" : false
+    },
+    "재빠른검기": {
+        "name": "재빠른검기",
+        "type": "passive",
+        "speed": "+5%",
+        "avoidance": "-4%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/재빠른검기.png",
+        "activate" : false
+    },
+    "독기를품은봉지": {
+        "name": "독기를품은봉지",
+        "type": "passive",
+        "defence": "+3%",
+        "power": "-4%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/독기를품은봉지.png",
+        "activate" : false
+    },
+    "너무무거운갑옷": {
+        "name": "너무무거운갑옷",
+        "type": "passive",
+        "speed": "-4%",
+        "maxHealth": "+3%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/너무무거운갑옷.png",
+        "activate" : false
+    },
+    "황금날개": {
+        "name": "황금날개",
+        "type": "passive",
+        "defence": "+3",
+        "speed": "+2%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/황금날개.png",
+        "activate" : false
+    },
+    "얼어붙은방패": {
+        "name": "얼어붙은방패",
+        "type": "passive",
+        "speed": "+4%",
+        "defence": "-3%",
+        "grade" : "nomal",
+        "imagePath": "assets/item/얼어붙은방패.png",
+        "activate" : false
+    },
+    "불에달궈진검": {
+        "name": "불에달궈진검",
+        "type": "passive",
+        "maxHealth": "+4%",
+        "power": "+3%",
+        "speed": "-4%",
+        "grade" : "rare",
+        "imagePath": "assets/item/불에달궈진검.png",
+        "activate" : false
+    },
+    "용의심장": {
+        "name": "용의심장",
+        "type": "passive",
+        "attackSpeed": "+3%",
+        "power": "+4%",
+        "avoidance": "-5%",
+        "grade" : "rare",
+        "imagePath": "assets/item/용의심장.png",
+        "activate" : false
+    },
+    "번개의창": {
+        "name": "번개의창",
+        "type": "passive",
+        "speed": "+5%",
+        "critical": "+3%",
+        "defence": "-4%",
+        "grade" : "rare",
+        "imagePath": "assets/item/번개의창.png",
+        "activate" : false
+    },
+    "잘관리된투구": {
+        "name": "잘관리된투구",
+        "type": "passive",
+        "maxHealth": "+4%",
+        "defence": "+3%",
+        "luck": "-4%",
+        "grade" : "rare",
+        "imagePath": "assets/item/잘관리된투구.png",
+        "activate" : false
+    },
+    "괜찮은스테로이드": {
+        "name": "괜찮은스테로이드",
+        "type": "passive",
+        "speed": "+3%",
+        "critical": "+4%",
+        "power": "-5%",
+        "grade" : "rare",
+        "imagePath": "assets/item/괜찮은스테로이드.png",
+        "activate" : false
+    },
+    "악마의손자국": {
+        "name": "악마의손자국",
+        "type": "passive",
+        "maxHealth": "+5%",
+        "avoidance": "+3%",
+        "attackSpeed": "-4%",
+        "grade" : "rare",
+        "imagePath": "assets/item/악마의손자국.png",
+        "activate" : false
+    },
+    "빛나는태양": {
+        "name": "빛나는태양",
+        "type": "passive",
+        "speed": "+4%",
+        "defence": "+3%",
+        "critical": "-4%",
+        "grade" : "rare",
+        "imagePath": "assets/item/빛나는태양.png",
+        "activate" : false
+    },
+    "추진력강화": {
+        "name": "추진력강화",
+        "type": "passive",
+        "speed": "+3%",
+        "avoidance": "+4%",
+        "maxHealth": "-5%",
+        "grade" : "rare",
+        "imagePath": "assets/item/추진력강화.png",
+        "activate" : false
+    },
+    "은반지": {
+        "name": "은반지",
+        "type": "passive",
+        "power": "+4%",
+        "avoidance": "+3%",
+        "attackSpeed": "-4%",
+        "grade" : "rare",
+        "imagePath": "assets/item/은반지.png",
+        "activate" : false
+    },
+    "거미줄망토": {
+        "name": "거미줄망토",
+        "type": "passive",
+        "avoidance": "+5%",
+        "defence": "+3%",
+        "speed": "-4%",
+        "grade" : "rare",
+        "imagePath": "assets/item/거미줄망토.png",
+        "activate" : false
+    },
+    "내리치는낙뢰": {
+        "name": "내리치는낙뢰",
+        "type": "passive",
+        "speed": "+4%",
+        "maxHealth": "+3%",
+        "power": "-4%",
+        "grade" : "rare",
+        "imagePath": "assets/item/내리치는낙뢰.png",
+        "activate" : false
+    },
+    "신의물방울": {
+        "name": "신의물방울",
+        "type": "passive",
+        "attackSpeed": "+3%",
+        "avoidance": "+4%",
+        "speed": "-5%",
+        "grade" : "rare",
+        "imagePath": "assets/item/신의물방울.png",
+        "activate" : false
+    },
+    "독사의피": {
+        "name": "독사의피",
+        "type": "passive",
+        "power": "+4%",
+        "speed": "-3%",
+        "maxHealth": "+5%",
+        "grade" : "rare",
+        "imagePath": "assets/item/독사의피.png",
+        "activate" : false
+    },
+    "마비의지팡이": {
+        "name": "마비의지팡이",
+        "type": "passive",
+        "speed": "+5%",
+        "avoidance": "-4%",
+        "defence": "+3%",
+        "grade" : "rare",
+        "imagePath": "assets/item/마비의지팡이.png",
+        "activate" : false
+    },
+    "빛나다불붙은반지": {
+        "name": "빛나다불붙은반지",
+        "type": "passive",
+        "avoidance": "+3%",
+        "power": "+4%",
+        "maxHealth": "-5%",
+        "grade" : "rare",
+        "imagePath": "assets/item/빛나다불붙은반지.png",
+        "activate" : false
+    },
+    "왕에게받은뱃지": {
+        "name": "왕에게받은뱃지",
+        "type": "passive",
+        "critical": "+4%",
+        "attackSpeed": "+3%",
+        "speed": "-4%",
+        "grade" : "rare",
+        "imagePath": "assets/item/왕에게받은뱃지.png",
+        "activate" : false
+    },
+    "무도인의띠": {
+        "name": "무도인의띠",
+        "type": "passive",
+        "defence": "+4%",
+        "speed": "+3%",
+        "critical": "-4%",
+        "grade" : "rare",
+        "imagePath": "assets/item/무도인의띠.png",
+        "activate" : false
+    },
+    "빛나는방패": {
+        "name": "빛나는방패",
+        "type": "passive",
+        "attackSpeed": "+4%",
+        "maxHealth": "-3%",
+        "power": "+5%",
+        "grade" : "rare",
+        "imagePath": "assets/item/빛나는방패.png",
+        "activate" : false
+    },
+    "은의지팡이": {
+        "name": "은의지팡이",
+        "type": "passive",
+        "avoidance": "+5%",
+        "power": "-4%",
+        "speed": "+3%",
+        "grade" : "rare",
+        "imagePath": "assets/item/은의지팡이.png",
+        "activate" : false
+    },
+    "옆동네냥이뼈목걸이": {
+        "name": "옆동네냥이뼈목걸이",
+        "type": "passive",
+        "defence": "+3%",
+        "critical": "+4%",
+        "speed": "-5%",
+        "grade" : "rare",
+        "imagePath": "assets/item/옆동네냥이뼈목걸이.png",
+        "activate" : false
+    },
+    "천둥의일격": {
+        "name": "천둥의일격",
+        "type": "passive",
+        "power": "+6%",
+        "speed": "-7%",
+        "critical": "+9%",
+        "maxHealth": "+4%",
+        "grade" : "epic",
+        "imagePath": "assets/item/천둥의일격.png",
+        "activate" : false
+    },
+    "순교자가남긴책": {
+        "name": "순교자가남긴책",
+        "type": "passive",
+        "attackSpeed": "+5%",
+        "avoidance": "-6%",
+        "power": "+8%",
+        "luck": "+3%",
+        "grade" : "epic",
+        "imagePath": "assets/item/순교자가남긴책.png",
+        "activate" : false
+    },
+    "용의포효를담은총": {
+        "name": "용의포효를담은총",
+        "type": "passive",
+        "maxHealth": "+7%",
+        "defence": "-5%",
+        "power": "+6%",
+        "critical": "+4%",
+        "grade" : "epic",
+        "imagePath": "assets/item/용의포효를담은총.png",
+        "activate" : false
+    },
+    "혼돈의지팡이": {
+        "name": "혼돈의지팡이",
+        "type": "passive",
+        "speed": "+6%",
+        "critical": "+5%",
+        "avoidance": "-7%",
+        "defence": "+3%",
+        "grade" : "epic",
+        "imagePath": "assets/item/혼돈의지팡이.png",
+        "activate" : false
+    },
+    "악마와의계약": {
+        "name": "악마와의계약",
+        "type": "passive",
+        "power": "+9%",
+        "avoidance": "-6%",
+        "speed": "+4%",
+        "maxHealth": "+5%",
+        "grade" : "epic",
+        "imagePath": "assets/item/악마와의계약.png",
+        "activate" : false
+    },
+    "풀플레이트아머": {
+        "name": "풀플레이트아머",
+        "type": "passive",
+        "defence": "+8%",
+        "attackSpeed": "-5%",
+        "luck": "+4%",
+        "critical": "+6%",
+        "grade" : "epic",
+        "imagePath": "assets/item/풀플레이트아머.png",
+        "activate" : false
+    },
+    "선악과": {
+        "name": "선악과",
+        "type": "passive",
+        "avoidance": "+7%",
+        "speed": "+6%",
+        "defence": "-5%",
+        "maxHealth": "+4%",
+        "grade" : "epic",
+        "imagePath": "assets/item/선악과.png",
+        "activate" : false
+    },
+    "신성한보호막": {
+        "name": "신성한보호막",
+        "type": "passive",
+        "speed": "+5%",
+        "maxHealth": "+6%",
+        "avoidance": "-7%",
+        "power": "+4%",
+        "grade" : "epic",
+        "imagePath": "assets/item/신성한보호막.png",
+        "activate" : false
+    },
+    "레일건": {
+        "name": "레일건",
+        "type": "passive",
+        "defence": "+9%",
+        "speed": "-6%",
+        "avoidance": "+5%",
+        "attackSpeed": "+3%",
+        "grade" : "epic",
+        "imagePath": "assets/item/레일건.png",
+        "activate" : false
+    },
+    "신성한구역": {
+        "name": "신성한구역",
+        "type": "passive",
+        "power": "+8%",
+        "avoidance": "-6%",
+        "maxHealth": "+7%",
+        "luck": "+4%",
+        "grade" : "epic",
+        "imagePath": "assets/item/신성한구역.png",
+        "activate" : false
+    },
+    "반짝이는별": {
+        "name": "반짝이는별",
+        "type": "passive",
+        "speed": "+7%",
+        "avoidance": "-6%",
+        "maxHealth": "+8%",
+        "power": "+5%",
+        "grade" : "epic",
+        "imagePath": "assets/item/반짝이는별.png",
+        "activate" : false
+    },
+    "악마의심장": {
+        "name": "악마의심장",
+        "type": "passive",
+        "defence": "+9%",
+        "maxHealth": "-6%",
+        "attackSpeed": "+7%",
+        "critical": "+4%",
+        "grade" : "epic",
+        "imagePath": "assets/item/악마의심장.png",
+        "activate" : false
+    },
+    "운명의신발": {
+        "name": "운명의신발",
+        "type": "passive",
+        "speed": "+8%",
+        "avoidance": "-7%",
+        "maxHealth": "+6%",
+        "power": "+5%",
+        "grade" : "epic",
+        "imagePath": "assets/item/운명의신발.png",
+        "activate" : false
+    },
+    "불사조의깃털": {
+        "name": "불사조의깃털",
+        "type": "passive",
+        "avoidance": "+8%",
+        "speed": "-7%",
+        "attackSpeed": "+6%",
+        "power": "+4%",
+        "grade" : "epic",
+        "imagePath": "assets/item/불사조의깃털.png",
+        "activate" : false
+    },
+    "혼돈의제물": {
+        "name": "혼돈의제물",
+        "type": "passive",
+        "power": "+7%",
+        "avoidance": "-8%",
+        "speed": "+6%",
+        "defence": "+5%",
+        "grade" : "epic",
+        "imagePath": "assets/item/혼돈의제물.png",
+        "activate" : false
+    }
+}

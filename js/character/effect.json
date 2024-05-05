@@ -1,0 +1,9 @@
+{
+    "bombEffect" : {
+        "spriteName" : "bombEffect",
+        "imagePath" : "assets/effects/bombEffect.png",
+        "width" : "192",
+        "height" : "192",
+        "frames" : [0, 1, 2, 3, 4, 5, 6]
+    }
+}

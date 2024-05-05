@@ -1,0 +1,33 @@
+{
+    "height": 10,
+    "layers": [
+      {
+        "data": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "height": 10,
+        "name": "Ground",
+        "opacity": 1,
+        "type": "tilelayer",
+        "visible": true,
+        "width": 10,
+        "x": 0,
+        "y": 0
+      }
+    ],
+    "nextlayerid": 2,
+    "nextobjectid": 1,
+    "orientation": "orthogonal",
+    "renderorder": "right-down",
+    "tiledversion": "1.7.2",
+    "tileheight": 32,
+    "tilesets": [
+      {
+        "firstgid": 1,
+        "source": "./json/marioTileset.json"
+      }
+    ],
+    "tilewidth": 32,
+    "type": "map",
+    "version": 1,
+    "width": 10
+  }
+  

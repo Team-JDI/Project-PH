@@ -1,0 +1,128 @@
+{
+    "megaman" : {
+        "maxHealth" : 270,
+        "speed" : 200,
+        "attackSpeed" : 100,
+        "power" : 100,
+        "range" : 300,
+        "critical" : 2,
+        "avoidance" : 0,
+        "defence" : 10,
+        "luck" : 0,
+        "absorption" : 0,
+        "animations" : {
+            "move" : {"frames" : {"start" : 11, "end" : 14}, "frameRate" : 15, "repeat" : -1},
+            "stop" : {"frames" : {"start" : 0, "end" : 2}, "frameRate" : 3, "repeat" : -1},
+            "slide" : {"frames" : {"start" : 15, "end" : 15}, "frameRate" : 3, "repeat" : -1}
+        },
+        "spriteKey" : "megaman",
+        "scale" : 0.1,
+        "description" : "팔에 달려있는 무기(버스터)를 성장시킬 수 있으며 최대성장시 원하는 효과를 지닌 세트효과로 변환할 수 있습니다.",
+        "descriptionStats" : {"life": 8, "agility": 6, "force": 6, "Ability": 8, "solid": 8}
+    },
+    "link" : {
+        "maxHealth" : 270,
+        "speed" : 200,
+        "attackSpeed" : 1000,
+        "power" : 90,
+        "range" : 400,
+        "critical" : 2,
+        "avoidance" : 0,
+        "defence" : 10,
+        "luck" : 0,
+        "absorption" : 0,
+        "animations" : {
+            "move" : {"frames" : {"start" : 10, "end" : 19}, "frameRate" : 10, "repeat" : -1},
+            "stop" : {"frames" : {"start" : 0, "end" : 3}, "frameRate" : 5, "repeat" : -1},
+            "slide" : {"frames" : {"start" : 20, "end" : 26}, "frameRate" : 20, "repeat" : -1}
+        },
+        "spriteKey" : "link",
+        "scale" : 3,
+        "description" : "모든 무기를 자유자재로 다루며 모험을 좋아하는 용감한 링크(젤다 아님 제발...)는 다른종류(무기 타입)을 장착할 때마다 공격력 보너스를 받을 수 있습니다.",
+        "descriptionStats" : {"life": 7, "agility": 6, "force": 6, "Ability": 8, "solid": 8}
+    },
+    "red" : {
+        "maxHealth" : 270,
+        "speed" : 200,
+        "attackSpeed" : 100,
+        "power" : 100,
+        "range" : 300,
+        "critical" : 2,
+        "avoidance" : 0,
+        "defence" : 10,
+        "luck" : 0,
+        "absorption" : 0,
+        "animations" : {
+            "move" : {"frames" : {"start" : 5, "end" : 8}, "frameRate" : 4, "repeat" : -1},
+            "stop" : {"frames" : {"start" : 0, "end" : 1}, "frameRate" : 2, "repeat" : -1},
+            "slide" : {"frames" : {"start" : 10, "end" : 12}, "frameRate" : 3, "repeat" : -1}
+        },
+        "spriteKey" : "red",
+        "scale" : 3,
+        "description" : "주머니 괴물에서 보여지듯 통나무를 혼자 짊어지고 철창조차 몸통박치기로 부수는 괴력의 소유자인 레드는 근접무기를 사용시 더 강력하게 몬스터를 팰 수 있습니다.",
+        "descriptionStats" : {"life": 6, "agility": 6, "force": 6, "Ability": 8, "solid": 8}
+    },
+    "bulletking" : {
+        "maxHealth" : 270,
+        "speed" : 200,
+        "attackSpeed" : 100,
+        "power" : 100,
+        "range" : 300,
+        "critical" : 2,
+        "avoidance" : 0,
+        "defence" : 10,
+        "luck" : 0,
+        "absorption" : 0,
+        "animations" : {
+            "move" : {"frames" : {"start" : 10, "end" : 15}, "frameRate" : 15, "repeat" : -1},
+            "stop" : {"frames" : {"start" : 0, "end" : 1}, "frameRate" : 3, "repeat" : -1},
+            "slide" : {"frames" : {"start" : 20, "end" : 24}, "frameRate" : 15, "repeat" : -1}
+        },
+        "spriteKey" : "bulletking",
+        "scale" : 3,
+        "description" : "다리가 짧아 슬픈 총알 불릿킹은 태생적으로 낮은 이동속도와 무거운 몸을 이끌고 이동하느라 체력을 많이 소모해 낮은 체력을 가지고 있지만 총의 축복을 받아 총 종류의 무기를 사용시 추가 치명타 율을 얻게 되며 흡혈량이 높게 측정된다.",
+        "descriptionStats" : {"life": 5, "agility": 6, "force": 6, "Ability": 8, "solid": 8}
+    },
+    "sonic" : {
+        "maxHealth" : 270,
+        "speed" : 200,
+        "attackSpeed" : 100,
+        "power" : 100,
+        "range" : 300,
+        "critical" : 2,
+        "avoidance" : 0,
+        "defence" : 10,
+        "luck" : 0,
+        "absorption" : 0,
+        "animations" : {
+            "move" : {"frames" : {"start" : 0, "end" : 5}, "frameRate" : 15, "repeat" : -1},
+            "stop" : {"frames" : {"start" : 12, "end" : 14}, "frameRate" : 3, "repeat" : -1},
+            "slide" : {"frames" : {"start" : 6, "end" : 10}, "frameRate" : 15, "repeat" : -1}
+        },
+        "spriteKey" : "sonic",
+        "scale" : 3,
+        "description" : "음속을 돌파하는 속도를 가진 소닉은 가장 빠른 이동속도를 가지며 높은 운동신경으로 슬라이딩의 쿨타임 또한 낮으며 재빠른 몸놀림으로 이동속도에 비례하는 회피율도 가지게 된다. 다만 맨날 뛰어다니느라 몸에 지방이 쌓이지 않아 다른 캐릭터들보다 맞으면 더 많은 데미지를 받는다.",
+        "descriptionStats" : {"life": 4, "agility": 6, "force": 6, "Ability": 8, "solid": 8}
+    },
+    "kirby" : {
+        "maxHealth" : 270,
+        "speed" : 200,
+        "attackSpeed" : 100,
+        "power" : 100,
+        "range" : 300,
+        "critical" : 2,
+        "avoidance" : 0,
+        "defence" : 10,
+        "luck" : 0,
+        "absorption" : 0,
+        "animations" : {
+            "move" : {"frames" : {"start" : 10, "end" : 19}, "frameRate" : 10, "repeat" : -1},
+            "stop" : {"frames" : {"start" : 0, "end" : 3}, "frameRate" : 3, "repeat" : -1},
+            "slide" : {"frames" : {"start" : 20, "end" : 20}, "frameRate" : 20, "repeat" : -1}
+        },
+        "spriteKey" : "kirby",
+        "scale" : 3,
+        "description" : "무엇이든 먹어버리는 귀여운 커비는 매일 몬스터만 먹다가 질려버린 후 더 이상 몬스터를 먹지않고 새로운 영역에 눈을 떠 무기 교체시 교체되는 무기의 부품을 훔쳐먹고 무기의 힘을 일부 몸에 축적한다. 상승하는 스탯은 무기의 태그에 따라서 결정된다.",
+        "descriptionStats" : {"life": 3, "agility": 6, "force": 6, "Ability": 8, "solid": 8}
+    }
+}

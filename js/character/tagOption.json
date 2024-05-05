@@ -1,0 +1,65 @@
+{
+    "berserker":{
+        "2" : {"attackSpeed" : "+5%", "absorption" : "+1%"},
+        "4" : {"attackSpeed" : "+5%", "absorption" : "+1%"},
+        "6" : {"attackSpeed" : "+5%", "absorption" : "+1%"}
+    },
+    "swift" : {
+        "2" : {"attackSpeed" : "+5%", "speed" : "+5%"},
+        "3" : {"attackSpeed" : "+10%", "speed" : "+10%"}
+    },
+    "explosive" : {
+        "2" : {"power" : "+2"},
+        "3" : {"power" : "+3"}
+    },
+    "fortress" : {
+        "1" : {"defence" : "+2", "maxHealth" : "+10%"},
+        "3" : {"defence" : "+4", "maxHealth" : "+15%"},
+        "5" : {"defence" : "+6", "maxHealth" : "+20%"}
+    },
+    "greed" : {
+        "2" : {"luck" : "+10"},
+        "4" : {"luck" : "+20"}
+    },
+    "hawkeye" : {
+        "2" : {"range" : "+10%", "critical" : "+5%"},
+        "3" : {"range" : "+20%", "critical" : "+10%"}
+    },
+    "swordMaster" : {
+        "2" : {"attackSpeed" : "+5%", "critical" : "+5%"},
+        "4" : {"attackSpeed" : "+10%", "critical" : "+10%"}
+    },
+    "fighter" : {
+        "2" : {"attackSpeed" : "+5%", "power" : "+5%"},
+        "4" : {"attackSpeed" : "+15%", "power" : "+10%"}
+    },
+    "assassin" : {
+        "2" : {"speed" : "+5%", "critical" : "+10%", "avoidance" : "+5%"},
+        "4" : {"speed" : "+5%", "critical" : "+10%", "avoidance" : "+5%"}
+    },
+    "instantlyToTheLord" : {
+        "2" : {"power" : "+10", "defence" : "-10"},
+        "4" : {"power" : "+20", "defence" : "-20"}
+    },
+    "soldier" : {
+        "2" : {"range" : "+10%", "attackSpeed" : "+10%"},
+        "4" : {"range" : "+10%", "attackSpeed" : "+10%"},
+        "6" : {"range" : "+10%", "attackSpeed" : "+10%"}
+    },
+
+
+
+
+
+    "ghost" : {
+        "3" : {"avoidance" : "+10%"}
+    },
+    "weaponMaster" : {
+        "2" : {"attackSpeed" : 10, "critical" : "5%"},
+        "4" : {"attackSpeed" : 20, "critical" : "10%"}
+    },
+    "mechanic" : {
+        "2" : {"attackSpeed" : "+10%", "critical" : "+5%"},
+        "4" : {"attackSpeed" : "+20%", "critical" : "+10%"}
+    }
+}
