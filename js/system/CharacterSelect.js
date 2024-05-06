@@ -18,7 +18,7 @@ class CharacterSelect extends Phaser.Scene {
     }
 
     preload() {
-        //this.load.image('selectBackground', "assets/background/characterSelect.png");
+        this.load.image('selectBackground', "assets/background/space0506.jpg");
         this.load.image('megamanThumb', "assets/characterThumbnail/megaman2.png");
         this.load.image('linkThumb', "assets/characterThumbnail/link3.png");
         this.load.image('kirbyThumb', "assets/characterThumbnail/kirby.png");
@@ -28,7 +28,8 @@ class CharacterSelect extends Phaser.Scene {
         this.load.spritesheet('playButton', 'assets/buttons/playButton.png', { frameWidth: 726, frameHeight: 452 });
 
         
-        this.load.image('selectBackground', "assets/background/helloWorldBG.gif");
+        //this.load.image('selectBackground', "assets/background/helloWorldBG.gif");
+        
 
         this.load.json('characters', 'js/character/character.json');
 
@@ -106,12 +107,29 @@ class CharacterSelect extends Phaser.Scene {
     }
 
     createThumbnails() {
-        const width = this.backWidth;
-        const height = this.backHeight;
+        
+        console.log(this.cameras.main.width);
+        console.log(this.backWidth);
 
-        const thumbnailWidth = width * 1/7;
-        const thumbnailHeight = thumbnailWidth;
-        const spacing = thumbnailWidth * 1/9;
+        const width = this.cameras.main.width;
+        const height = this.cameras.main.height;
+
+        let thumbnailWidth = width * 1/7;
+        
+        let spacing = thumbnailWidth * 1/9;
+
+        if(thumbnailWidth > 200) {
+            thumbnailWidth = 200;
+            spacing = (Math.floor(width - (thumbnailWidth * 7))) * 1/6;
+        }
+
+        let thumbnailHeight = thumbnailWidth;
+
+        // 142 142 15.8
+
+        // 274.28 274.28 30.4
+
+
 
         const startButton = this.add.sprite(width / 2, height * 0.85, 'playButton', 0)
             .setOrigin(0.5)
@@ -130,13 +148,15 @@ class CharacterSelect extends Phaser.Scene {
             this.startSelectedCharacterStage();
         });
     
-
+        const totalThumbnails = 6;
         this.thumbnails = ['megamanThumb', 'linkThumb', 'kirbyThumb', 'sonicThumb', 'bulletkingThumb', 'redThumb'].map((thumbnailKey, index) => {
                 
-            const containerWidth = this.thumbnails.length * (thumbnailWidth + spacing);
+            const containerWidth = 0;
+
             const containerX = (width - containerWidth) / 10;
             const containerY = height / 7;
-            const characterContainer = this.add.container(containerX + index * (thumbnailWidth + spacing), containerY);
+            const characterContainer = this.add.container(containerX + index * (width * 1/6)-20, containerY);
+
 
     
             const characterThumbnail = this.add.image(0, 0, thumbnailKey)
@@ -146,6 +166,7 @@ class CharacterSelect extends Phaser.Scene {
             characterThumbnail.setScale(thumbnailWidth / characterThumbnail.width, thumbnailHeight / characterThumbnail.height);
             characterThumbnail.setData('index', index);
     
+
             const characterGraphics = this.add.graphics();
             characterGraphics.lineStyle(2, 0xffffff);
             characterGraphics.strokeRect(
@@ -216,11 +237,19 @@ class CharacterSelect extends Phaser.Scene {
     }
 
     highlightSelectedThumbnail() {
-        const width = this.backWidth;
-        const height = this.backHeight;
-        const thumbnailWidth = width * 1/7;
-        const thumbnailHeight = thumbnailWidth;
-        const spacing = thumbnailWidth * 1/9;
+        const width = this.cameras.main.width;
+        const height = this.cameras.main.height;
+
+        let thumbnailWidth = width * 1/7;
+        
+        let spacing = thumbnailWidth * 1/9;
+
+        if(thumbnailWidth > 200) {
+            thumbnailWidth = 200;
+            spacing = (Math.floor(width - (thumbnailWidth * 7))) * 1/6;
+        }
+
+        let thumbnailHeight = thumbnailWidth;
 
         this.thumbnails.forEach((thumbnail, index) => {
             const container = thumbnail.parentContainer;

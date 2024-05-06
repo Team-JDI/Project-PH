@@ -18,7 +18,7 @@ const config = {
     
 
     // 장면 설정
-    scene:[Loading, MainMenu, CharacterSelect, StageSuperMario, EndingScene, ItemSelectionScene, PauseMenu, ExitConfirmation]
+    scene:[Loading, MainMenu, CharacterSelect, StageSuperMario, EndingScene, ItemSelectionScene, PauseMenu, ExitConfirmation, VictoryScene]
 }
 
 const game = new Phaser.Game(config);

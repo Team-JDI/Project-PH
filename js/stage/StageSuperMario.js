@@ -5,7 +5,7 @@
             this.masterController;
             this.player;        
             this.stageTimer;
-            this.stageDuration = 100; // 스테이지 지속 시간 (초)
+            this.stageDuration = 2; // 스테이지 지속 시간 (초)
             this.currentStage = 1;
             this.timerText;
             this.timer;
@@ -15,6 +15,8 @@
             this.settlement = 0;    // 정산의 카운트;
             this.tickets = [];
             this.boss;
+            this.bossTimer = 0;
+            this.bossTimerText;
 
             this.bgm;
             this.pauseBgm;
@@ -24,6 +26,7 @@
         preload() {
             // 맵.. 일단 단일로 했음.
             this.load.image('space', 'assets/background/map/map13.png');
+            // purple
 
             this.load.image('stopButton', 'assets/buttons/stopButton.png');
 
@@ -88,11 +91,9 @@
             this.characterName = data.characterName;
             if(this.player){
                 this.player.destroy();
-                console.log(123);
             }
             this.player = null;
 
-            console.log(this.player);
             // 사운드
             this.bgm = this.sound.add('standardBGM', { loop: true, volume: 0.3});
             this.bgm.play();
@@ -178,6 +179,12 @@
             .setScrollFactor(0);
             this.startItemSelectionScene();
 
+            this.bossTimerText = this.add.text(game.config.width / 2, 16, `보스 : ${this.bossTimer} 초`, { fontSize: '32px', fill: '#ffffff' })
+            .setOrigin(0.5, 0) // 텍스트의 중앙을 x축 기준으로 설정
+            .setScrollFactor(0);
+            this.bossTimerText.setVisible(false);
+
+
             // 체력 바 배경 설정
             this.healthBarBackground = this.add.graphics();
             this.healthBarBackground.fillStyle(0x000000, 0.2); // 투명한 검은색 배경
@@ -229,7 +236,7 @@
                 this.masterController.update();
             }
 
-            this.updateTimerText(this.stageTimer.getRemainingSeconds());  
+            this.updateTimerText(this.game.stageTimer.getRemainingSeconds());
 
             this.updateHealthAndExpText();
             this.updateHealthBar();
@@ -239,7 +246,6 @@
                 this.updateBossHealthBar();
             } 
         }
-
         updateHealthAndExpText() {
             const characterStatus = this.masterController.getCharacterStatus();
         
@@ -282,7 +288,7 @@
 
         // 다음 스테이지가 보스인 경우를 제외한 나머지에 호출 == 보스가 죽었을 때도 기믹 시작
         startItemSelectionScene() {
-            this.stageTimer = this.time.delayedCall(this.stageDuration * 1000, this.nextStageSelection, [], this);
+            this.game.stageTimer = this.time.delayedCall(this.stageDuration * 1000, this.nextStageSelection, [], this);
         }
 
         nextStageSelection() {
@@ -293,17 +299,26 @@
             this.time.delayedCall(2000, () => {
                 this.clearTicket();
                 this.currentStage ++;
-                if(this.currentStage % 2 == 0) {
+                if(this.currentStage % 3 == 0) {
                     this.startBossStage();
                 } else {
                     this.startNormalStage();
                 }
+
             }, [], this);
         }
 
         // 다음 스테이지가 노말 스테이지인 경우 -> 타이머 세팅하고 아이템 셀렉션으로
         startNormalStage(){
             this.scene.pause();
+
+            this.player.setPosition(this.game.imageWidth / 2, this.game.imageHeight / 2);
+
+            this.game.stageTimer.paused = false;
+            this.timerText.setVisible(true);
+            if(this.bossTimerText && this.bossTimerText.visible) {
+                this.bossTimerText.setVisible(false);
+            } 
 
             const characterStatus = this.masterController.getCharacterStatus();
             const weapons = this.masterController.getWeapons();
@@ -315,16 +330,25 @@
             // 위에 담아놓고 초기화 다시 해버리기 ㅇㅇ
             this.settlement = 0;
 
-            this.scene.launch('ItemSelectionScene', { player: this.player, characterStatus : characterStatus, weapons:weapons, masterController: this.masterController, settlement : this.settlement, passives: passives});
+            this.game.stageTimer.reset({
+                delay: this.stageDuration * 1000,
+                callback: this.nextStageSelection,
+                args: [],
+                callbackScope: this
+            });
 
-            // 플레이어 가운데로 이동시키기 나중에.. 아마 맵의 크기를 기준으로 옮기게 해야하지 않을까나
-            this.player.setPosition(game.config.width / 2, game.config.height / 2);
+            this.scene.launch('ItemSelectionScene', { player: this.player, characterStatus : characterStatus, weapons:weapons, masterController: this.masterController, settlement : this.settlement, passives: passives});
 
         }
 
         // 다음 스테이지가 보스 스테이지인 경우 -> 보스 생성 및 체력 세팅하고 아이템 셀렉션으로
         startBossStage(){
             this.scene.pause();
+
+            this.player.setPosition(this.game.imageWidth / 2, this.game.imageHeight / 2);
+
+            this.timerText.setVisible(false);
+            this.game.stageTimer.paused = true;
 
             const characterStatus = this.masterController.getCharacterStatus();
             const weapons = this.masterController.getWeapons();
@@ -335,16 +359,24 @@
             const boss = this.masterController.monsterController.createBoss();
             this.boss = boss;
 
+            this.bossTimerText.setVisible(true);
+
             const bossCheck = this.time.addEvent({
                 delay: 1000,
                 loop: true,
                 callback: () => {
-                    // 하 boss객체 파괴 전과 후를 console.log에 찍어놔도 보스가 죽으면 파괴 전 찍힌 console.log의 속성들이 전부 죽은 보스의 값으로 변경되어있음 ㅋㅋㅋㅋㅋㅋㅋ
-                    // 덕분에 존나 고생함 -> phaser에서 객체 활동은 active로 판단하면 될듯? 
                     if(boss.active) {
                         console.log('살아있음')
+                        this.bossTimer++;
+                        this.bossTimerText.setText(`보스 : ${this.bossTimer} 초`).setOrigin(0.5, 0);
                     } else {
                         console.log('죽음');
+
+                        //this.bossTimer 를 GameData에 저장.. 이 후
+
+                        this.bossTimerText.setVisible(false);
+                        this.bossTimer = 0;
+
                         bossCheck.remove();
                         this.bossHealthBarBackground.destroy();
                         this.bossHealthBarFill.destroy();
@@ -355,9 +387,7 @@
             });
 
             this.createBossHealthBar(boss);
-
-            // 플레이어 가운데로 이동시키기 나중에.. 아마 맵의 크기를 기준으로 옮기게 해야하지 않을까나
-            this.player.setPosition(game.config.width / 2, game.config.height / 2);
+ 
         }
 
         createBossHealthBar(boss) {
@@ -417,8 +447,6 @@
         
             return `${formattedMinutes}:${formattedSeconds}`;
         }
-
-
 
         // 게임 일시정지 함수
         pauseGame() {
