@@ -5,7 +5,7 @@
             this.masterController;
             this.player;        
             this.stageTimer;
-            this.stageDuration = 2; // 스테이지 지속 시간 (초)
+            this.stageDuration = 50; // 스테이지 지속 시간 (초)
             this.currentStage = 1;
             this.timerText;
             this.timer;
@@ -43,14 +43,21 @@
 
             //Lv1
             this.load.spritesheet('Lv1_0001', 'assets/monster/마즈피플.png', {frameWidth: 72,frameHeight: 45});
-            this.load.spritesheet('Lv1_0002', 'assets/monster/굼바(마리오).png', {frameWidth: 16,frameHeight: 16,});
+            this.load.spritesheet('Lv1_0002', 'assets/monster/굼바(마리오).png', {frameWidth: 16,frameHeight: 16});
+            this.load.spritesheet('Lv1_0003', 'assets/monster/메타르.png', {frameWidth: 17,frameHeight: 17});
+            this.load.spritesheet('Lv1_0004', 'assets/monster/새.png', {frameWidth: 12,frameHeight: 12});
+
 
             //Lv2
             this.load.spritesheet('Lv2_0001', 'assets/monster/찐위들.png', {frameWidth: 30,frameHeight: 25});
             this.load.spritesheet('Lv2_0002', 'assets/monster/부.png', {frameWidth: 41,frameHeight: 61});
+            this.load.spritesheet('Lv2_0003', 'assets/monster/치코보.png', {frameWidth: 32,frameHeight: 24});
+            this.load.spritesheet('Lv2_0004', 'assets/monster/애벌레.png', {frameWidth: 45,frameHeight: 45});
+
 
             //Lv3
             this.load.spritesheet('Lv3_0001', 'assets/monster/쿵쿵.png', {frameWidth: 30,frameHeight: 32});
+            this.load.spritesheet('Lv3_0002', 'assets/monster/애벌레뭉치.png', {frameWidth: 32,frameHeight: 26});
 
 
             this.load.json('monsterData', 'js/monster/monsterData.json');
@@ -235,7 +242,6 @@
             if(!this.paused) {
                 this.masterController.update();
             }
-
             this.updateTimerText(this.game.stageTimer.getRemainingSeconds());
 
             this.updateHealthAndExpText();

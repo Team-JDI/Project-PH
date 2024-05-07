@@ -60,8 +60,10 @@ class MonsterController {
         // 총합을 10으로 조정하여 비율을 유지
         return baseRatio.map(x => x / total * 10);
     }
+    getTimer(){
+        return this.scene.game.stageTimer.getRemainingSeconds();
+    }
     
-
     
     getRandomSpawnPosition() {
         this.mapWidth = this.scene.game.imageWidth;
@@ -168,7 +170,20 @@ class MonsterController {
         monsterInfo.speed = speed;
 
         this.scene.masterController.effectController.playEffectAnimation(x,y,'effect');
-        const monster = new Monster(this.scene, x, y, monsterInfo, this.player); // 항상 0001 유형의 몬스터 생성
+        const monster = new Monster(this.scene, x, y, monsterInfo, this.player,this.stageNum); // 항상 0001 유형의 몬스터 생성
+        this.monstersGroup.add(monster);
+        this.scene.physics.add.collider(this.monstersGroup, monster);
+
+    }
+
+    //test용 스폰 몬스터 설정
+    spawnTestMonster(spriteKey, x, y) {
+
+        // 몬스터 정보 가져오기
+        const monsterData = this.getMonsterInfoBySpriteKey(spriteKey);
+
+        // 지정된 위치에 몬스터 생성
+        const monster = new Monster(this.scene, x, y, monsterData, this.player,this.stageNum);
         this.monstersGroup.add(monster);
         this.scene.physics.add.collider(this.monstersGroup, monster);
 
@@ -202,7 +217,7 @@ class MonsterController {
     
         setTimeout(() => {
             this.scene.masterController.effectController.playEffectAnimation(posX,posY,'effect');
-            const monster = new Monster(this.scene, posX, posY, monsterInfo, this.player);
+            const monster = new Monster(this.scene, posX, posY, monsterInfo, this.player,this.stageNum);
             this.monstersGroup.add(monster);
             this.scene.physics.add.collider(this.monstersGroup, monster);
             this.nowMonsterNum++;
@@ -230,13 +245,18 @@ class MonsterController {
 
     update() {
         this.circlePatternTimer++;
-
-        if (this.monsterTimer > 60) {
+        console.log(this.getTimer());
+        if (this.getTimer() % 4 == 0) {
             this.monsterTimer = 0;
             this.createMonster(); // 몬스터 추가
+
+            //테스트 몬스터 추가용
+            const centerX = this.scene.sys.game.config.width / 2;
+            const centerY = this.scene.sys.game.config.height / 2;
+            this.spawnTestMonster('Lv3_0002', centerX, centerY);
         }
         //4초마다 원형 패턴 몬스터 생성
-        if (this.circlePatternTimer > 240) {
+        if (this.getTimer() % 4 == 0) {
             this.circlePatternTimer = 0;
             if(this.stageNum == 5){
                 this.createCirclePatternMonster(); // 원형 패턴 몬스터 생성

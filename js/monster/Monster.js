@@ -1,16 +1,17 @@
 class Monster extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, monsterInfo, player) {
+  constructor(scene, x, y, monsterInfo, player,stage) {
     super(scene, x, y, monsterInfo.spriteKey);
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
     this.player = player;
-
+    this.stage = stage;
     //기본 속성 초기화
     this.spriteKey = monsterInfo.spriteKey;
     this.animations = monsterInfo.animations;
-    this.health = monsterInfo.health || 100;
-    this.speed = monsterInfo.speed || 20;
-    this.scale = monsterInfo.scale || 1;
+    this.stat = this.growthInfo(monsterInfo,stage);
+    this.health = this.stat.health;
+    this.speed = this.stat.speed;
+    this.attack = this.stat.attack;
     this.lastSkillTime = 0;
     this.skill = monsterInfo.skill || 0;
     this.type = monsterInfo.type || "nomal";
@@ -22,14 +23,45 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
 
     this.reverseFlip = monsterInfo.reverseFlip || false;
 
-    this.setScale(this.scale);
+    this.setScale(monsterInfo.scale);
     this.setDepth(1);
     this.setupAnimations(); 
 
     //추가
     this.damageTimers = Array(6).fill(0);
   }
- 
+
+  growthInfo(monsterInfo, stage) {
+    let healthGrowthRate, speedGrowthRate, attackGrowthRate;
+
+    switch (monsterInfo.level) {
+      case 1:
+        healthGrowthRate = 0.05;
+        speedGrowthRate = 0.03;
+        attackGrowthRate = 0.04;
+        break;
+      case 2:
+        healthGrowthRate = 0.10;
+        speedGrowthRate = 0.05;
+        attackGrowthRate = 0.06;
+        break;
+      case 3:
+        healthGrowthRate = 0.15;
+        speedGrowthRate = 0.07;
+        attackGrowthRate = 0.08;
+        break;
+      default:
+        healthGrowthRate = 0.05;
+        speedGrowthRate = 0.03;
+        attackGrowthRate = 0.04;
+    }
+
+    return {
+      health: monsterInfo.health * Math.pow(1 + healthGrowthRate, stage),
+      speed: monsterInfo.speed * Math.pow(1 + speedGrowthRate, stage),
+      attack: (monsterInfo.attack || 10) * Math.pow(1 + attackGrowthRate, stage)
+    };
+  }
 
   setupAnimations() {
     Object.keys(this.animations).forEach(key => {
@@ -229,18 +261,50 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
 
     //몬스터 죽은 횟수 올리기
     this.scene.masterController.gameDataManager.updateMonstersKilled();
-
-    // 경험치 구슬 생성
-    for (let i = 0; i < 2; i++) {
-      const expBead = new ExpBead(this.scene, this.x, this.y);
-      this.scene.masterController.monsterController.expBeadsGroup.add(expBead);
+    if(this.spriteKey != "Lv3_0002-2"){
+      // 경험치 구슬 생성
+      for (let i = 0; i < 2; i++) {
+        const expBead = new ExpBead(this.scene, this.x, this.y);
+        this.scene.masterController.monsterController.expBeadsGroup.add(expBead);
+      }
+      // 확률적으로 보너스 상자 생성
+      if (Math.random() <= boxRate) {
+        const bonusBox = new BonusBox(this.scene, this.x, this.y);
+        this.scene.masterController.monsterController.bonusBoxGroup.add(bonusBox);
+      }
     }
-    // 확률적으로 보너스 상자 생성
-    if (Math.random() <= boxRate) {
-      const bonusBox = new BonusBox(this.scene, this.x, this.y);
-      this.scene.masterController.monsterController.bonusBoxGroup.add(bonusBox);
+    if (this.spriteKey === 'Lv3_0002') {
+      this.spawnSurroundingMonsters();
     }
 
     this.destroy();
   }
+
+  spawnSurroundingMonsters() {
+    const spawnCount = 5; // 소환할 몬스터의 수
+    const spawnRadius = 100; // 소환 반경 (픽셀 단위)
+    const verticalSpeed = 300;
+
+    // 소환할 몬스터 정보 로드
+    const monsterData = this.scene.cache.json.get('monsterData')['Lv3_0002-2'];
+
+    for (let i = 0; i < spawnCount; i++) {
+        // 사망 위치 주변에서 랜덤 위치 계산
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * spawnRadius;
+        const x = this.x + distance * Math.cos(angle);
+        const y = this.y + distance * Math.sin(angle);
+
+        // 몬스터 생성 및 그룹에 추가
+        const newMonster = new Monster(this.scene, x, y, monsterData, this.player);
+        this.scene.masterController.monsterController.monstersGroup.add(newMonster);
+
+        this.scene.physics.world.enable(newMonster);
+        newMonster.body.setVelocity(
+            Math.cos(angle) * verticalSpeed, // 수평 속도
+            Math.sin(angle) * verticalSpeed - 400 // 수직 속도 (위로 투사)
+        );
+        newMonster.body.setGravityY(500);
+    }
+}
 }
