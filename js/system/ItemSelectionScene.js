@@ -24,7 +24,9 @@ class ItemSelectionScene extends Phaser.Scene {
 
     create(data) {
         // 씬 배경
-        const overlay = this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x808080, 1);
+        // 후보1 : 0xA30FE2, 후보2 : 0x800080, 후보3 : 0x834683, 후보4 : 0x4B0082
+        const overlay = this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x4B0082, 1);
+
         overlay.setOrigin(0);
 
         this.characterStatus = data.characterStatus;
