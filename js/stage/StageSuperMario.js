@@ -108,15 +108,9 @@
 
             this.masterController = new MasterController(this, this.bgm);
 
-            // 캐릭터 네임 보내기 // 이 씬 init에서 받아진 데이터임
-            const selectedCharacterName = this.characterName;
-            this.player = this.masterController.init(selectedCharacterName);
-
             this.load.image('space', 'assets/background/map/seeJustSpace.png');
 
             let image;
-
-            console.log(this.game);
 
             this.load.once('complete', () => {
                 image = this.add.image(50, 50, 'space').setOrigin(0);
@@ -139,6 +133,11 @@
                     pauseButton.setPosition(this.cameras.main.width - positionNum, positionNum);
                 });
             });
+            
+            // 캐릭터 네임 보내기 // 이 씬 init에서 받아진 데이터임
+            const selectedCharacterName = this.characterName;
+            this.player = this.masterController.init(selectedCharacterName);
+
             
             this.load.start();
 

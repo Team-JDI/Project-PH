@@ -13,6 +13,7 @@ class MetalNight extends Phaser.Physics.Arcade.Sprite {
         this.setScale(4);
         console.log('MetalNight');
         this.checkTrail =false;
+        this.damageTimers = Array(6).fill(0);
     }
 
     createTrail() {
@@ -220,7 +221,22 @@ class MetalNight extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    hit(damage) {
+    hit(damage, weaponIndex, absorption) {
+        const currentTime = this.scene.time.now;
+        if(weaponIndex !== undefined){
+            // 무기별 타이머를 확인하여 일정 기간 동안 같은 무기로부터 데미지를 입지 않도록 함
+            if (currentTime < this.damageTimers[weaponIndex]) {
+                  return; // 현재 시간이 이전 데미지 타이머 내에 있는 경우 바로 반환
+            }
+
+              // 무기 인덱스별 타이머 갱신 (예: 1000ms 동안 같은 무기로부터 데미지를 받지 않도록 설정)
+            this.damageTimers[weaponIndex] = currentTime + 300;
+        }
+
+        if (Math.floor(Math.random() * 100) + 1 <= absorption) {
+            this.scene.masterController.characterController.characterStatus.absorptionHealth();
+        }
+
         let update = this.nowHealth - damage;
         if(update <= 0) {
            this.destroy();
@@ -233,5 +249,7 @@ class MetalNight extends Phaser.Physics.Arcade.Sprite {
         if (this.nowHealth > 0 && this.maxHealth*(this.maxpattern-this.pattern) / patternThreshold >= this.nowHealth) {
             this.pattern++; 
         }
+
+        
     }
 }
