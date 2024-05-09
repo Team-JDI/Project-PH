@@ -110,6 +110,8 @@
 
             let image;
 
+            console.log(this.game);
+
             this.load.once('complete', () => {
                 image = this.add.image(50, 50, 'space').setOrigin(0);
 
