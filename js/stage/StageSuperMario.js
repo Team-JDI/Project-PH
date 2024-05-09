@@ -35,6 +35,7 @@
 
             // 미사일 몬스터 관련 이미지
             this.load.image('missile','assets/attack/attack.png');
+            this.load.image('EggMissile','assets/attack/EggMissile.png');
             this.load.image('bossMissile','assets/attack/bossMissile.png');
             this.load.image('explosion', 'assets/effects/explosion.png');
             this.load.image('expBead', 'assets/attack/expBead.png');
@@ -56,8 +57,13 @@
             this.load.json('monsterData', 'js/monster/monsterData.json');
 
 
-            // 보스
-            this.load.spritesheet('bossSprite', 'assets/boss/가논(젤다).png', {
+           // 보스
+           this.load.spritesheet('metalNight', 'assets/boss/보스(메타 나이트).png', {
+                frameWidth: 49,
+                frameHeight: 49
+            });
+
+            this.load.spritesheet('eggMan', 'assets/boss/eggMan.png', {
                 frameWidth: 33,
                 frameHeight: 32
             });

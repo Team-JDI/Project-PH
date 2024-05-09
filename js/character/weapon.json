@@ -373,7 +373,7 @@
         "damageScale": 0,
         "rangeScale": 0.4,
         "fireRate": 2000,
-        "tag": ["hawkeye", "soldier"],
+        "tag": ["hawkeye", "soldier", "swift"],
         "soundName": "",
         "closestMonster": null,
         "lastFired": 0,
