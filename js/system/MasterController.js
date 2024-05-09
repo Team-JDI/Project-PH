@@ -160,7 +160,7 @@ class MasterController {
         });
     }
 
-    updateItem(data) {
+    updateItem(data, grade) {
         // data 받은거 passives.json의 타입을 passive라고 하고 나서
         // 해당 data.type == passive 라면 패시브로
         // 아니라면 전부 무기로 보내는데 지금 코드는 웨폰 이름이니까
@@ -170,9 +170,9 @@ class MasterController {
                 if(data.activate){
                     //this.characterController.characterStatus.updateStatus(data)
                 }
-                    this.characterController.characterStatus.updateStatus(data);
+                    this.characterController.characterStatus.updatePassiveStatus(data);
                 break;
-            default : this.weaponController.addWeapon(data.name);
+            default : this.weaponController.addWeapon(data.name, grade);
             break;
         }
         //this.characterController.characterStatus.updateStatus(data);
