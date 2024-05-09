@@ -5,8 +5,8 @@
             this.masterController;
             this.player;        
             this.stageTimer;
-            this.stageDuration = 50; // 스테이지 지속 시간 (초)
             this.currentStage = 1;
+            this.stageDuration = 45+(this.currentStage*5) // 스테이지 지속 시간 (초)
             this.timerText;
             this.timer;
 

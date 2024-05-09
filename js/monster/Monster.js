@@ -13,7 +13,10 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
     this.speed = this.stat.speed;
     this.attack = this.stat.attack;
     this.lastSkillTime = 0;
-    this.skill = monsterInfo.skill || 0;
+    
+    this.skill = monsterInfo.skill || "none";
+    this.skillCool = monsterInfo.skillCool || 0;
+    this.skillDuration = monsterInfo.skillDuration || 0;
     this.type = monsterInfo.type || "nomal";
     this.attackRange = monsterInfo.attackRange || 300; // 공격 범위
     this.attackCooldown = monsterInfo.attackCooldown || 0; // 공격 쿨다운
@@ -65,30 +68,32 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
 
   setupAnimations() {
     Object.keys(this.animations).forEach(key => {
-      const anim = this.animations[key];
-      const fullAnimKey = this.spriteKey + '_' + key;
-      if (!this.scene.anims.exists(fullAnimKey)) {
-        this.scene.anims.create({
-          key: fullAnimKey,
-          frames: this.scene.anims.generateFrameNumbers(this.spriteKey, { 
-            start: anim.frames.start, 
-            end: anim.frames.end 
-          }),
-          frameRate: anim.framerate,
-          repeat: anim.repeat
-        });
-      }
+        const anim = this.animations[key];
+        if (anim && anim.frames && 'start' in anim.frames && 'end' in anim.frames) {
+            const fullAnimKey = this.spriteKey + '_' + key;
+            if (!this.scene.anims.exists(fullAnimKey)) {
+                this.scene.anims.create({
+                    key: fullAnimKey,
+                    frames: this.scene.anims.generateFrameNumbers(this.spriteKey, { 
+                        start: anim.frames.start, 
+                        end: anim.frames.end 
+                    }),
+                    frameRate: anim.framerate,
+                    repeat: anim.repeat
+                });
+            }
+        } else {
+            console.error(`Animation data for key ${key} is incomplete:`, anim);
+        }
     });
+    
     this.play(this.spriteKey + '_move');
   }
 
+
   update() {
-    if(this.type === "ghost"){
-      if (this.scene.time.now > this.lastSkillTime  + this.skill) {
-        this.Vanishing();
-        this.lastSkillTime  = this.scene.time.now;
-      }
-    }
+    if (this.skill != "none") this.checkSkill();
+
     const speed = this.speed;
     // 플레이어와 몬스터 사이의 거리를 계산합니다.
     const dx = this.player.x - this.x;
@@ -99,7 +104,7 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
     this.setVelocity((dx / distance) * speed, (dy / distance) * speed);
     if(this.attackCooldown != 0){
       if (distance <= this.attackRange && !this.isAttacking && this.scene.time.now > this.lastAttackTime + this.attackCooldown) {
-        this.attack();
+        this.attacking();
       }
     }
 
@@ -110,7 +115,7 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  attack() {
+  attacking() {
     this.isAttacking = true;
     this.lastAttackTime = this.scene.time.now;
     this.play(this.spriteKey + '_attack');
@@ -166,18 +171,6 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
     if (this.blinkTimer) {
       this.blinkTimer.remove(); // 깜빡임 타이머 제거
     }
-  }
-
-  //몬스터 은신기능
-  Vanishing() {
-    this.setVisible(false); // 몬스터를 화면에서 숨김
-    this.isVanishing = true; // Vanishing 상태로 설정
-
-    // 일정 시간 후에 몬스터를 다시 나타나게 함
-    this.scene.time.delayedCall(800, () => {
-        this.setVisible(true); // 몬스터를 다시 보이게 함
-        this.isVanishing = false; // Vanishing 상태 해제
-    });
   }
 
   hit(damage, weaponIndex, absorption) {
@@ -306,5 +299,61 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
         );
         newMonster.body.setGravityY(500);
     }
-}
+  }
+  //스킬 적용 부분
+  checkSkill() {
+    if (this.scene.time.now > this.lastSkillTime + this.skillCool) {
+        this.executeSkill(this.skill);
+        this.lastSkillTime = this.scene.time.now;
+    }
+  }
+
+  //스킬 적용 스위치문
+  executeSkill(skillName) {
+    switch(skillName) {
+        case 'vanish':
+            this.vanish();
+            break;
+        case 'dash':
+            this.dash();
+            break;
+        case 'explosion':
+            this.explosion();
+            break;
+        default:
+            console.log('No skill or invalid skill name');
+    }
+  }
+
+  //스킬 모음집
+  vanish() {
+    this.isVanishing = true; // Vanishing 상태로 설정
+  
+    // 가시성을 주기적으로 토글합니다
+    this.blinkEvent = this.scene.time.addEvent({
+      delay: 400,  // 깜빡임 간격을 짧게 설정
+      callback: () => {
+        this.setVisible(!this.visible); // 스프라이트 가시성을 토글
+      },
+      callbackScope: this,
+      loop: true
+    });
+  
+    // 지정된 스킬 지속 시간 후에 깜빡임을 중지하고 가시성을 복원
+    this.scene.time.delayedCall(this.skillDuration, () => {
+      this.blinkEvent.remove(); // 깜빡임 이벤트 제거
+      this.setVisible(true);    // 몬스터를 다시 보이게 함
+      this.isVanishing = false; // Vanishing 상태 해제
+    });
+  }
+  
+  //대쉬
+  dash(){
+
+  }
+
+  //대쉬
+  explosion(){
+
+  }
 }
