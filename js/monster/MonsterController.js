@@ -22,6 +22,12 @@ class MonsterController {
         this.setupCollisions();
 
         this.lastPlayerPosition = { x: null, y: null };
+
+        // 이미 나온 보스의 타입을 저장하는 배열
+        this.spawnedBossTypes = [];
+
+        // 보스의 타입 목록
+        this.bossTypes = ['metalNight', 'eggMan'];
     }
 
     // 스테이지 몬스터 소환 딜레이
@@ -271,15 +277,39 @@ class MonsterController {
         this.stateMonsterLevel = 0;
     }
 
-    createBoss(){
-        let boss;
-        
-        boss = new Boss(this.scene,200,200,this.player);
+    createBoss() {
+        let bossType;
+        let boss=null;
 
-        this.scene.physics.add.collider(this.monstersGroup, boss); // 몬스터 그룹과 새로운 몬스터 간의 충돌 감지
-            
-        this.monstersGroup.add(boss); // 생성된 몬스터를 그룹에 추가합니다.
-        
+        // 아직 나오지 않은 보스 타입을 무작위로 선택
+        do {
+            bossType = Phaser.Math.RND.pick(this.bossTypes);
+        } while (this.spawnedBossTypes.includes(bossType));
+
+        // 보스 객체 생성
+        bossType='metalNight';
+
+        switch (bossType) {
+            case 'metalNight':
+                boss = new MetalNight(this.scene, 200, 200, this.player);
+                break;
+            case 'eggMan':
+                boss = new EggMan(this.scene, 200, 200, this.player);
+                break;
+        }
+
+
+        if (boss) {
+            // 몬스터 그룹과 새로운 보스 간의 충돌 감지
+            this.scene.physics.add.collider(this.monstersGroup, boss);
+
+            // 생성된 보스를 그룹에 추가합니다.
+            this.monstersGroup.add(boss);
+
+            // 나온 보스의 숫자를 기록
+            this.spawnedBossTypes.push(bossType);
+        }
+
         return boss;
     }
 
