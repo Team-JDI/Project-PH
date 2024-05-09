@@ -7,9 +7,9 @@ class MonsterController {
         this.bonusBoxGroup = scene.physics.add.group(); // 상자 그룹생성
         this.monsterTimer = 0;
         this.stageNum = 1;
+        this.stageStartTime = this.startTime();
         this.spawnDelay = this.calculateSpawnDelay(this.stageNum); // stage마다 줄어드는 스폰 딜레이
         this.stageDuration = this.getStageDuration(this.stageNum);
-        this.stageStartTime = this.scene.time.now;
         this.circlePatternTimer = 0; //몬스터 원형 패턴
         this.player = player;
         this.monsterRatio = this.calculateMonsterRatios(this.stageNum); // stage배율 받는 몬스터 스폰 로직
@@ -19,13 +19,18 @@ class MonsterController {
         this.stateMonsterLevel = 0;
         //this.createBoss();
 
-        this.i = 1
+        this.temp = 1;
+
         this.divisions = 4; // 맵을 4x4로 분할한다고 가정
 
         this.setupSpawner();
         this.setupCollisions();
 
         this.lastPlayerPosition = { x: null, y: null };
+    }
+
+    startTime(){
+        return this.scene.time.now;
     }
 
     setupSpawner() {
@@ -35,7 +40,7 @@ class MonsterController {
                 // 스테이지 종료 2초 전에는 몬스터를 소환하지 않습니다.
                 if (this.getRemainingTime() > 2000) {
                     this.createMonster(this.i);
-                    this.spawnTestMonster('Lv2_0002');
+                    this.spawnTestMonster('Lv3_0002');
                 }
             },
             callbackScope: this,
@@ -50,14 +55,13 @@ class MonsterController {
 
     //스테이지 지속시간
     getStageDuration(stage){
-        return (45+(stage*5))*1000;
+        return (5+(stage*5))*1000;
     }
 
 
 
     // 스테이지 몬스터 소환 딜레이
     calculateSpawnDelay(stageNum) {
-        console.log("여기 들어옴");
         const baseDelay = 1000; // 기본 주기: 1000밀리초
         const reductionPerFiveStages = 100; // 5 스테이지마다 줄어드는 시간: 100밀리초
         const decrement = Math.floor((stageNum - 1) / 5) * reductionPerFiveStages;
@@ -221,9 +225,6 @@ class MonsterController {
 
     // 몬스터 생성 메서드
     createMonster(i) {
-        console.log("여기 찍힌다");
-        console.log("들어온 수 :" + i);
-        this.i++;
         const totalMonsters = this.stageMonster; // 스테이지별 총 몬스터 수
         const ratio = this.monsterRatio; // 레벨별 생성 비율
         let targetCounts = ratio.map(r => Math.floor(totalMonsters * (r / ratio.reduce((a, b) => a + b))));
@@ -277,8 +278,10 @@ class MonsterController {
     
 
     update() {
-        this.circlePatternTimer++;
-
+        if(this.temp == this.stageNum){
+            this.temp++;
+            this.stageStartTime = this.startTime();
+        }
         //소환 패턴
         // if (this.getTimer() == this.spawnTime ) {
         //     this.monsterTimer = 0;
@@ -314,7 +317,6 @@ class MonsterController {
 
     updateStage(stageNum) {
         this.stageNum = stageNum;
-
         this.resetStage();
 
         // 업데이트 되면 다음 스테이지로 넘어간거니 초기화

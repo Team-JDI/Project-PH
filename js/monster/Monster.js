@@ -92,7 +92,7 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
 
 
   update() {
-    if (this.skill != "none") this.checkSkill();
+    if (this.skill != "none" && this.skill != "explosion") this.checkSkill();
 
     const speed = this.speed;
     // 플레이어와 몬스터 사이의 거리를 계산합니다.
@@ -113,6 +113,15 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
     } else {
         this.setFlipX(this.player.x < this.x);
     }
+
+    //자폭 스킬 로직
+    if (distance <= this.attackRange && !this.isExploded) {
+      if (this.skill === "explosion") {
+          this.explosion(); // 폭발 스킬을 실행합니다.
+          this.isExploded = true; // 폭발 실행 상태를 true로 설정합니다.
+      }
+  }
+
   }
 
   attacking() {
@@ -321,7 +330,7 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
             this.explosion();
             break;
         default:
-            console.log('No skill or invalid skill name');
+            console.log(skillName);
     }
   }
 
@@ -349,11 +358,87 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
   
   //대쉬
   dash(){
+    this.originalSpeed = this.speed;
+    this.speed *= 1.8;
 
+    const dashAnimKey = this.spriteKey + '_dash';
+    if (this.scene.anims.exists(dashAnimKey)) {
+        this.play(this.spriteKey + '_dash');
+    } else {
+        this.setTint(0x00ff00); // 녹색으로 색상 변경
+    }
+
+    this.dashTimer = this.scene.time.delayedCall(this.skillDuration, () => {
+      if (!this.scene || this.scene.sys.isDestroyed) return; 
+      this.speed = this.originalSpeed;
+
+      if (!this.scene.anims.exists(dashAnimKey)) {
+          this.clearTint(); // 색상 효과 제거
+      }
+      if (this.active) {
+          this.play(this.spriteKey + '_move');
+      }
+    });
   }
 
-  //대쉬
-  explosion(){
+  //자폭
+  explosion() {
+    const explosionDamage = this.health * 0.2;
+    const explosionAnimKey = this.spriteKey + '_explosion';
 
+    // 폭발 안내용 붉은색 깜빡임 시작
+    this.startBlinking();
+
+    // 폭발 딜레이 설정 (2초 후 폭발)
+    this.scene.time.delayedCall(2000, () => {
+        if (this.scene.anims.exists(explosionAnimKey)) {
+            this.play(explosionAnimKey);
+            this.once('animationcomplete', animation => {
+                if (animation.key === explosionAnimKey) {
+                    this.applyExplosionDamage(explosionDamage); // 폭발 피해 적용
+                    this.destroy(); // 몬스터 제거
+                }
+            });
+        } else {
+            console.log("폭발 애니메이션이 설정되지 않았습니다. 이펙트 추가 예정");
+            this.stopBlinking(); // 깜빡임 중지
+        }
+    });
+}
+
+
+  applyExplosionDamage(damage) {
+    // 폭발 범위 계산: 기본 범위 * 몬스터의 스케일
+    const explosionRadius = 100 * this.scaleX;
+    const explosionArea = new Phaser.Geom.Circle(this.x, this.y, explosionRadius);
+
+    this.scene.physics.overlap(explosionArea, this.scene.players, (explosionArea, player) => {
+        // 플레이어에게 피해 적용
+        if (player instanceof Player) { // Player 클래스의 인스턴스인지 확인
+          this.scene.masterController.characterController.characterStatus.takeDamage(damage);
+        }
+    });
+  }
+
+  // 깜빡이는 효과 시작
+  startBlinking() {
+    this.isBlinking = true;
+    this.blinkEvent = this.scene.time.addEvent({
+        delay: 100, // 100밀리초 간격으로 색상 변경
+        callback: () => {
+            // 색상을 변경하거나 원래 상태로 복구
+            this.setTint(this.isBlinking ? 0xff0000 : 0xffffff); // 빨간색 또는 원래색
+            this.isBlinking = !this.isBlinking; // 깜빡임 상태 토글
+        },
+        loop: true
+    });
+  }
+
+  // 깜빡이는 효과 중지
+  stopBlinking() {
+    if (this.blinkEvent) {
+        this.blinkEvent.remove(); // 이벤트 제거
+        this.setTint(0xffffff); // 색상을 원래대로
+    }
   }
 }

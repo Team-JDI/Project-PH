@@ -102,7 +102,7 @@
     "reverseFlip": true,
     "animations": {
       "move": { "frames": { "start": 1, "end": 3 }, "framerate": 5, "repeat": -1 },
-      "dash" : { "frames": {"start":4,"end":6},"framerate":10} 
+      "dash" : { "frames": {"start":4,"end":7},"framerate":10,"repeat":-1} 
     },
     "level" : 2
   },
@@ -114,13 +114,13 @@
     "health":50,
     "attack":10,
     "speed":100,
-    "attackRange": 500,
+    "attackRange": 30,
     "frameWidth": 32,
     "frameHeight": 24,
     "reverseFlip": true,
     "animations": {
       "move": { "frames": { "start": 0, "end": 2 }, "framerate": 5, "repeat": -1 },
-      "attack": { "frames": { "start": 3, "end": 9 }, "framerate": 5, "repeat": 1 }
+      "explosion": { "frames": { "start": 3, "end": 9 }, "framerate": 5, "repeat": 0 }
     },
     "level" : 2
   },
@@ -140,7 +140,7 @@
   "Lv3_0002":{
     "spriteKey": "Lv3_0002",
     "scale": 2.5,
-    "health":300,
+    "health":200,
     "attack":30,
     "speed":0.2,
     "frameWidth": 32,
@@ -159,13 +159,13 @@
     "health":150,
     "attack":20,
     "speed":100,
-    "attackRange": 500,
+    "attackRange": 30,
     "frameWidth": 32,
     "frameHeight": 24,
     "reverseFlip": true,
     "animations": {
       "move": { "frames": { "start": 0, "end": 2 }, "framerate": 5, "repeat": -1 },
-      "attack": { "frames": { "start": 3, "end": 9 }, "framerate": 5, "repeat": 1 }
+      "explosion": { "frames": { "start": 3, "end": 9 }, "framerate": 5, "repeat": 0 }
     },
     "level" : 3
   }
