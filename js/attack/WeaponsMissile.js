@@ -1,5 +1,5 @@
 class WeaponMissile extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, weapon){
+    constructor(scene, x, y, weapon, permeation){
         super(scene, x, y, weapon.missileName);
         this.sceneData = scene;
 
@@ -11,6 +11,9 @@ class WeaponMissile extends Phaser.Physics.Arcade.Sprite {
         this.setScale(weapon.missileScale); //미사일 크기
 
         this.speed = weapon.missileSpeed; //미사일 속도
+
+        this.permeation = permeation; //관통 갯수
+        this.permeationCount = 0; // 현재 충돌수
 
     }
 
@@ -24,25 +27,11 @@ class WeaponMissile extends Phaser.Physics.Arcade.Sprite {
 
         let byTypeCheckCollision;
 
-        if(this.weapon.type == 'rifle' || this.weapon.type == 'sniper' || this.weapon.type == 'shotgun'){
+        if(this.weapon.type == 'rifle' || this.weapon.type == 'sniper' || this.weapon.type == 'shotgun' || this.weapon.type == 'artillery'){
             byTypeCheckCollision = (missile, monster) => this.checkCollisionJustMissile(missile, monster, weaponDamage);
-        }else if(this.weapon.type == 'artillery'){
+        }else if(this.weapon.type == 'artillery-fire'){
             byTypeCheckCollision = (missile, monster) => this.checkCollisionArtillery(missile, monster, weaponDamage);
         }else if(this.weapon.type == 'artillery-bomb'){
-            /* const targetX = x + Math.cos(angle) * this.weapon.range; // 최종 목표 x 위치
-            const targetY = y + Math.sin(angle) * this.weapon.range; // 최종 목표 y 위치
-
-
-            //충돌하지 않아도 해당지점에 도착하면 터질 수 있게 만듬
-            this.scene.tweens.add({
-                targets: this,
-                x: targetX,
-                y: targetY,
-                duration: this.weapon.range / this.speed * 1000, // 이동 시간 계산
-                onComplete: () => {
-                    this.explodeMisiile(targetX, targetY, weaponDamage); // 이동 완료 후 폭발
-                }
-            }); */
             byTypeCheckCollision = (missile, monster) => this.checkCollisionBomb(missile, monster, weaponDamage);
         }
 
@@ -61,7 +50,10 @@ class WeaponMissile extends Phaser.Physics.Arcade.Sprite {
     checkCollisionBomb(missile, monster, damage){
         this.explodeMissile(monster.x, monster.y, damage);
         this.sceneData.masterController.effectController.playEffectAnimation(monster.x, monster.y, "bombEffect");
-        missile.destroy();
+
+        if(this.permeationCount == this.permeation){
+            missile.destroy();
+        }
     }
 
     // x = 충돌한 몬스터의 x값, y = 충돌한 몬스터의 y 값
@@ -83,23 +75,7 @@ class WeaponMissile extends Phaser.Physics.Arcade.Sprite {
             }
 
         });
-
-        
-
-        /* // 파티클 이펙트 생성
-        const particles = this.scene.add.particles('bombEffect');
-        const emitter = particles.createEmitter({
-            speed: 100,
-            scale: { start: 1, end: 0 },
-            blendMode: 'ADD',
-            lifespan: 200
-        });
-
-        // 파티클 이펙트 위치 설정 및 발동
-        emitter.setPosition(x, y);
-        emitter.explode(20); */
-
-        this.destroy(); // 미사일 객체 파괴
+        this.permeationCount++;
     }
 
     // 무기가 몬스터 때리기
@@ -109,11 +85,17 @@ class WeaponMissile extends Phaser.Physics.Arcade.Sprite {
         }else{
             monster.hit(damage, undefined, this.weapon.absorption);
         }
-        missile.destroy();
+
+        this.permeationCount++;
+
+        if(this.permeationCount == this.permeation){
+            missile.destroy();
+        }
+        
     }
 
     //일반 중화기
-    checkCollisionArtillery(missile, monster, damage){
+    checkCollisionArtilleryFire(missile, monster, damage){
 
     }
 

@@ -5,7 +5,7 @@
             this.masterController;
             this.player;        
             this.stageTimer;
-            this.stageDuration = 2; // 스테이지 지속 시간 (초)
+            this.stageDuration = 20; // 스테이지 지속 시간 (초)
             this.currentStage = 1;
             this.timerText;
             this.timer;
@@ -84,6 +84,8 @@
             
             //무기데이터
             this.load.json('weaponData', 'js/character/weapon.json');
+            this.load.image('bombBall', 'assets/weapon/총알/bombBall.png');
+            this.load.image('healingTotem', 'assets/item/healingTotem.png');
 
             // 사운드
             this.load.audio('standardBGM', 'assets/sounds/SonicStageBGM.mp3');

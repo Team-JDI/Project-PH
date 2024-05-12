@@ -33,6 +33,9 @@ class WeaponController{
         if(this.characterName == "kirby") {
             this.activateKirbySpecial();
         }
+
+        //0번 인덱스 = 내가 가진 관통아이템 수 / 1번 인덱스 = 관통될 몬스터 수
+        this.permeation = [0,1];
     }
 
     update(){
@@ -154,7 +157,7 @@ class WeaponController{
 
             if(weapon.name == 'beamShotgun123'){
                 for(let i = 0; i < 5; i++){
-                    const weaponMissile = new WeaponMissile(this.scene, weapon.image.x, weapon.image.y, weapon);
+                    const weaponMissile = new WeaponMissile(this.scene, weapon.image.x, weapon.image.y, weapon, this.permeation[1]);
 
                     //생성 후 미사일 그룹에 추가
                     this.weaponMissilesGroup.add(weaponMissile);
@@ -166,7 +169,7 @@ class WeaponController{
                 }
             }else if(weapon.type == 'shotgun'){
                 for(let i = 0; i < 5; i++){
-                    const weaponMissile = new WeaponMissile(this.scene, weapon.image.x, weapon.image.y, weapon);
+                    const weaponMissile = new WeaponMissile(this.scene, weapon.image.x, weapon.image.y, weapon, this.permeation[1]);
 
                     //생성 후 미사일 그룹에 추가
                     this.weaponMissilesGroup.add(weaponMissile);
@@ -176,7 +179,7 @@ class WeaponController{
                 }
             }else{
                 //탄환 객체 생성
-                const weaponMissile = new WeaponMissile(this.scene, weapon.image.x, weapon.image.y, weapon);
+                const weaponMissile = new WeaponMissile(this.scene, weapon.image.x, weapon.image.y, weapon, this.permeation[1]);
 
                 //생성 후 미사일 그룹에 추가
                 this.weaponMissilesGroup.add(weaponMissile);
@@ -338,7 +341,6 @@ class WeaponController{
                 }
             }
         }
-        console.log(444444444, tagStatus);
         //캐릭터의 데이터를 리턴(updateOwnTag로 return)
         return this.scene.masterController.characterController.characterStatus.tagStatusUpdate(tagStatus);
     }
@@ -433,7 +435,7 @@ class WeaponController{
     //미사일 전체 파괴
     allWeaponMissileDestroy() {
         this.weaponMissilesGroup.clear(true, true);
-        }
+    }
 
 
     getWeapons() {
@@ -474,6 +476,7 @@ class WeaponController{
                     }
                     break;
             }
+            this.scene.physics.world.remove(weapon.image);
         }
     }
 
@@ -594,8 +597,6 @@ class WeaponController{
             null,
             this
         );
-
-        this.scene.physics.world.remove(weaponObject.image);
     }
 
     // 무기가 몬스터 때리기
