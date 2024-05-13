@@ -287,7 +287,7 @@ class MonsterController {
         } while (this.spawnedBossTypes.includes(bossType));
 
         // 보스 객체 생성
-        bossType='metalNight';
+        //bossType='metalNight';
 
         switch (bossType) {
             case 'metalNight':
