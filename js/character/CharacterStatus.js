@@ -5,7 +5,7 @@ class CharacterStatus{
         this.characterName = status.spriteKey;
 
         this.maxHealth = status.maxHealth;      //최대 체력
-        this.nowHealth = status.maxHealth;      //현재 체력 (스테이지 클리어시 자동으로 최대체력이 되도록 updateStatus에서 설정)
+        this.nowHealth = 10;      //현재 체력 (스테이지 클리어시 자동으로 최대체력이 되도록 updateStatus에서 설정)
         this.speed = status.speed;              //캐릭터 속도
         this.attackSpeed = status.attackSpeed;  //공격속도
         this.power = status.power;              //캐릭터의 공격력
@@ -60,6 +60,12 @@ class CharacterStatus{
         };
 
         this.activateSonicSpecialStatus();
+
+        this.expRatio = 1;
+
+        this.expEventRatio = 10;
+
+        this.expRecovery = [false, 0];
     
         //스테이터스를 만들어 놓긴했지만 아직 이걸로 사용하는것은 구현을 못했습니다
         //크리티컬이나 흡혈 등 미구현
@@ -108,6 +114,14 @@ class CharacterStatus{
             }else{
                 this.ownPassive[data.name] = 1;
             }
+
+            console.log("check1");
+
+            if(data.activate == true){
+                return;
+            }
+
+            console.log("check2");
 
             //패시브로 들고 온 스테이터스를 순환하며 값을 추가 - 패시브는 없어지지 않기에 제거 x
             for(const [statusName, value] of Object.entries(data)){
@@ -182,9 +196,14 @@ class CharacterStatus{
 
     //exp획득시 레벨업 로직
     getExp(exp){
-        this.nowExperience += exp;
+        this.nowExperience += exp * this.expRatio;
         //경험치 획득 사운드 재생
         this.scene.masterController.soundController.playEffectSound("expAcquisition");
+
+        if(this.expRecovery[0] && this.nowHealth < this.maxHealth && (Math.floor(Math.random() * 100) + 1) < this.expRecovery[1]){
+            this.nowHealth++;
+        }
+
         while(this.nowExperience >= Math.floor(this.maxExperience)){
             this.nowExperience -= Math.floor(this.maxExperience);
             this.level++;
@@ -264,7 +283,7 @@ class CharacterStatus{
             this.activateSonicSpecialStatus();
         }
 
-        this.nowHealth = this.maxHealth;
+        //this.nowHealth = this.maxHealth;
     }
     
 }
