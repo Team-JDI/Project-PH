@@ -414,6 +414,7 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
 
     this.scene.physics.overlap(explosionArea, this.scene.players, (explosionArea, player) => {
         // 플레이어에게 피해 적용
+        this.setScale(this.monsterInfo.scale*2);
         if (player instanceof Player) { // Player 클래스의 인스턴스인지 확인
           this.scene.masterController.characterController.characterStatus.takeDamage(damage);
         }

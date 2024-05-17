@@ -19,7 +19,7 @@ class ItemSelectionScene extends Phaser.Scene {
 
     preload() {
         this.load.json('passives', 'js/character/passives.json');
-        
+        this.load.json('weapon', 'js/character/weapon.json');
     }
 
     create(data) {
@@ -49,6 +49,7 @@ class ItemSelectionScene extends Phaser.Scene {
         this.createSelectionButton();
 
         this.itemsData = this.cache.json.get('passives');
+        this.weaponData = this.cache.json.get('weapon');
 
         this.loadItemImage();
 
@@ -70,12 +71,20 @@ class ItemSelectionScene extends Phaser.Scene {
 
     loadItemImage(){
         const itemsData = this.itemsData;
+        const weaponData = this.weaponData;
 
         // 각 아이템의 이미지 preload
         for (const itemKey in itemsData) {
             const item = itemsData[itemKey];
             if (item.imagePath) {
                 this.load.image(item.name, item.imagePath);
+            }
+        }
+
+        for(const weaponKey in weaponData){
+            const weapon = weaponData[weaponKey];
+            if (weapon.path){
+                this.load.image(weapon.name,weapon.path);
             }
         }
     }
@@ -90,6 +99,8 @@ class ItemSelectionScene extends Phaser.Scene {
     }
 
     displayRewardObjects() {
+        console.log("지금 여게 뭔지 보는중");
+        //무기 배열 더하기
         const itemsData = this.itemsData;
         const itemKeys = Object.keys(itemsData);
         
@@ -97,6 +108,7 @@ class ItemSelectionScene extends Phaser.Scene {
         
         const selectedItems = itemKeys.slice(0, Math.min(3, itemKeys.length));
         this.selectedItems = selectedItems;
+        console.log(this.selectedItems);
         
         selectedItems.forEach((itemName, index) => {
             const item = itemsData[itemName];
