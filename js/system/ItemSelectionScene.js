@@ -5,6 +5,8 @@ class ItemSelectionScene extends Phaser.Scene {
         this.selectedRewardIndex = -1;
         this.selectedItems = [];
         this.itemsData = [];    // json배열 저장
+        this.weaponData = [];
+        this.combinedData =[]
         this.characterStatus;
         this.weapons;
         this.passives;
@@ -99,19 +101,21 @@ class ItemSelectionScene extends Phaser.Scene {
     }
 
     displayRewardObjects() {
-        console.log("지금 여게 뭔지 보는중");
         //무기 배열 더하기
         const itemsData = this.itemsData;
-        const itemKeys = Object.keys(itemsData);
+        const weaponData = this.weaponData;
+
+        //배열 결합
+        this.combinedData = { ...itemsData, ...weaponData };
+        const itemKeys = Object.keys(this.combinedData);
         
         Phaser.Utils.Array.Shuffle(itemKeys);
         
         const selectedItems = itemKeys.slice(0, Math.min(3, itemKeys.length));
         this.selectedItems = selectedItems;
-        console.log(this.selectedItems);
         
         selectedItems.forEach((itemName, index) => {
-            const item = itemsData[itemName];
+            const item = this.combinedData[itemName];
             const x = this.cameras.main.width * 0.1 + (index * this.cameras.main.width * 0.2);
             const y = this.cameras.main.width * 0.1;
             const itemImage = this.add.image(x, y, item.name);
@@ -192,7 +196,7 @@ class ItemSelectionScene extends Phaser.Scene {
             const selectedItemIndex = this.selectedRewardIndex;
             const selectedItemKey = this.selectedItems[selectedItemIndex];
 
-            const selectedItem = this.itemsData[selectedItemKey];
+            const selectedItem = this.combinedData[selectedItemKey];
 
             this.masterController.updateItem(selectedItem);
 

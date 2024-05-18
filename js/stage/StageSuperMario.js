@@ -5,8 +5,8 @@ class StageSuperMario extends Phaser.Scene {
         this.masterController;
         this.player;        
         this.stageTimer;
+        this.stageDuration = 5; // 스테이지 지속 시간 (초)
         this.currentStage = 1;
-        this.stageDuration = 5+(this.currentStage*5) // 스테이지 지속 시간 (초)
         this.timerText;
         this.timer;
 
@@ -35,6 +35,7 @@ class StageSuperMario extends Phaser.Scene {
 
         // 미사일 몬스터 관련 이미지
         this.load.image('missile','assets/attack/attack.png');
+        this.load.image('EggMissile','assets/attack/EggMissile.png');
         this.load.image('bossMissile','assets/attack/bossMissile.png');
         this.load.image('explosion', 'assets/effects/explosion.png');
         this.load.image('expBead', 'assets/attack/expBead.png');
@@ -63,8 +64,13 @@ class StageSuperMario extends Phaser.Scene {
         this.load.json('monsterData', 'js/monster/monsterData.json');
 
 
-        // 보스
-        this.load.spritesheet('bossSprite', 'assets/boss/가논(젤다).png', {
+       // 보스
+       this.load.spritesheet('metalNight', 'assets/boss/보스(메타 나이트).png', {
+            frameWidth: 49,
+            frameHeight: 49
+        });
+
+        this.load.spritesheet('eggMan', 'assets/boss/eggMan.png', {
             frameWidth: 33,
             frameHeight: 32
         });
@@ -85,6 +91,8 @@ class StageSuperMario extends Phaser.Scene {
         
         //무기데이터
         this.load.json('weaponData', 'js/character/weapon.json');
+        this.load.image('bombBall', 'assets/weapon/총알/bombBall.png');
+        this.load.image('healingTotem', 'assets/item/healingTotem.png');
 
         // 사운드
         this.load.audio('standardBGM', 'assets/sounds/SonicStageBGM.mp3');
@@ -108,10 +116,6 @@ class StageSuperMario extends Phaser.Scene {
         this.pauseBgm = this.sound.add('Game-selectBGM', {volume: 0.3});
 
         this.masterController = new MasterController(this, this.bgm);
-
-        // 캐릭터 네임 보내기 // 이 씬 init에서 받아진 데이터임
-        const selectedCharacterName = this.characterName;
-        this.player = this.masterController.init(selectedCharacterName);
 
         this.load.image('space', 'assets/background/map/seeJustSpace.png');
 
@@ -138,6 +142,11 @@ class StageSuperMario extends Phaser.Scene {
                 pauseButton.setPosition(this.cameras.main.width - positionNum, positionNum);
             });
         });
+        
+        // 캐릭터 네임 보내기 // 이 씬 init에서 받아진 데이터임
+        const selectedCharacterName = this.characterName;
+        this.player = this.masterController.init(selectedCharacterName);
+
         
         this.load.start();
 
@@ -242,6 +251,7 @@ class StageSuperMario extends Phaser.Scene {
         if(!this.paused) {
             this.masterController.update();
         }
+
         this.updateTimerText(this.game.stageTimer.getRemainingSeconds());
 
         this.updateHealthAndExpText();

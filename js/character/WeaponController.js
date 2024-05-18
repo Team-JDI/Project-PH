@@ -29,6 +29,13 @@ class WeaponController{
         if(this.characterName == "sonic") {
             this.activateSonicSpecial();
         }
+
+        if(this.characterName == "kirby") {
+            this.activateKirbySpecial();
+        }
+
+        //0번 인덱스 = 내가 가진 관통아이템 수 / 1번 인덱스 = 관통될 몬스터 수
+        this.permeation = [0,1];
     }
 
     update(){
@@ -150,7 +157,7 @@ class WeaponController{
 
             if(weapon.name == 'beamShotgun123'){
                 for(let i = 0; i < 5; i++){
-                    const weaponMissile = new WeaponMissile(this.scene, weapon.image.x, weapon.image.y, weapon);
+                    const weaponMissile = new WeaponMissile(this.scene, weapon.image.x, weapon.image.y, weapon, this.permeation[1]);
 
                     //생성 후 미사일 그룹에 추가
                     this.weaponMissilesGroup.add(weaponMissile);
@@ -162,7 +169,7 @@ class WeaponController{
                 }
             }else if(weapon.type == 'shotgun'){
                 for(let i = 0; i < 5; i++){
-                    const weaponMissile = new WeaponMissile(this.scene, weapon.image.x, weapon.image.y, weapon);
+                    const weaponMissile = new WeaponMissile(this.scene, weapon.image.x, weapon.image.y, weapon, this.permeation[1]);
 
                     //생성 후 미사일 그룹에 추가
                     this.weaponMissilesGroup.add(weaponMissile);
@@ -172,7 +179,7 @@ class WeaponController{
                 }
             }else{
                 //탄환 객체 생성
-                const weaponMissile = new WeaponMissile(this.scene, weapon.image.x, weapon.image.y, weapon);
+                const weaponMissile = new WeaponMissile(this.scene, weapon.image.x, weapon.image.y, weapon, this.permeation[1]);
 
                 //생성 후 미사일 그룹에 추가
                 this.weaponMissilesGroup.add(weaponMissile);
@@ -317,10 +324,10 @@ class WeaponController{
                         if (effect.includes('%')) {
                             //이미 키값이 존재한다면 %를 제거해 더하고
                             if (tagStatus[status]) {
-                                tagStatus[status] += parseFloat(effect.split("%")[0]);
+                                tagStatus[status] = parseFloat(tagStatus[status].split("%")[0]) + parseFloat(effect.split("%")[0]) + "%";
                             }else {
                                 //키값이 존재하지 않는다면 추가합니다
-                                tagStatus[status] = parseFloat(effect.split("%")[0]);
+                                tagStatus[status] = effect;
                             }
                         } else {
                             //단순 숫자만 있는 경우
@@ -428,7 +435,7 @@ class WeaponController{
     //미사일 전체 파괴
     allWeaponMissileDestroy() {
         this.weaponMissilesGroup.clear(true, true);
-        }
+    }
 
 
     getWeapons() {
@@ -469,6 +476,7 @@ class WeaponController{
                     }
                     break;
             }
+            this.scene.physics.world.remove(weapon.image);
         }
     }
 
@@ -589,8 +597,6 @@ class WeaponController{
             null,
             this
         );
-
-        this.scene.physics.world.remove(weaponObject.image);
     }
 
     // 무기가 몬스터 때리기
@@ -622,19 +628,96 @@ class WeaponController{
 
     //커비 스페셜
     activateKirbySpecial(weaponTag){
-        let kirbySpecialStat;
-        let updateStat;
+        let kirbySpecial = {};
         switch(true){
+            case weaponTag == "berserker" :
+                kirbySpecial = {
+                    "absorption" : 1,
+                    "attackSpeed" : 5
+                }
+                break;
+            case weaponTag == "swift" :
+                kirbySpecial = {
+                    "attackSpeed" : 5,
+                    "speed" : 5
+                }
+                break;
+            case weaponTag == "explosive" :
+                kirbySpecial = {
+                    "power" : 1
+                }
+                break;
+            case weaponTag == "fortress" :
+                kirbySpecial = {
+                    "defence" : 1,
+                    "maxHealth" : 10
+                }
+                break;
+            case weaponTag == "greed" :
+                kirbySpecial = {
+                    "luck" : 1
+                }
+                break;
+            case weaponTag == "hawkeye" :
+                kirbySpecial = {
+                    "range" : 10,
+                    "critical" : 2
+                }
+                break;
+            case weaponTag == "swordMaster" :
+                kirbySpecial = {
+                    "attackSpeed" : 5,
+                    "critical" : 2
+                }
+                break;
+            case weaponTag == "fighter" :
+                kirbySpecial = {
+                    "attackSpeed" : 5,
+                    "power" : 1
+                }
+                break;
+            case weaponTag == "assassin" :
+                kirbySpecial = {
+                    "speed" : 5,
+                    "critical" : 2,
+                    "avoidance" : 5
+                }
+                break;
+            case weaponTag == "instantlyToTheLord" :
+                kirbySpecial = {
+                    "power" : 5,
+                    "defecne" : -5
+                }
+                break;
+            case weaponTag == "soldier" :
+                kirbySpecial = {
+                    "range" : 5,
+                    "attackSpeed" : 5
+                }
+                break;
+            case weaponTag == "mechanic" :
+                kirbySpecial = {
+                    "maxHealth" : 5,
+                    "attackSpeed" : 2,
+                    "power" : 1,
+                    "range" : 2,
+                    "critical" : 1,
+                    "avoidance" : 1,
+                    "defence" : 1,
+                    "luck" : 1,
+                    "absorption" : 1
+                }
+                break;
+
             case weaponTag == "ghost" :
-                kirbySpecialStat = "avoidance";
-                updateStat = 1;
+            kirbySpecial = {
+                "avoidance" : 5,
+            }
+            break;
         }
-        this.scene.masterController.characterController.characterStatus.kirbySpecial(kirbySpecialStat, updateStat);
+        this.scene.masterController.characterController.characterStatus.activateKirbySpecialStatus(kirbySpecial);
     }
 
-    activateSonicSpecial(){
-        this.scene.masterController.characterController.characterStatus.activateSonicSpecialStatus(this.characterName);
-    }
 
     activateMechanicTag(tagCount){
         //들어왔을때 메카닉 태그가 활성화 되어있는지 안되어있는지 확인 활성화가 안되어있다면 return

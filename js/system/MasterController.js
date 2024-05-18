@@ -10,6 +10,7 @@ class MasterController {
         this.bgm = bgm;
         this.currentStage = 1;
         this.weaponController;
+        this.activePassiveController;
     }
 
 
@@ -63,7 +64,7 @@ class MasterController {
         this.player = this.characterController.player;
 
         //캐릭터 위치 선정
-        this.player.setPosition(game.config.width / 4, game.config.height / 2);
+        this.player.setPosition(game.config.width / 2, game.config.height / 2);
 
         this.monsterController = new MonsterController(this.sceneData, this.player);    
 
@@ -76,6 +77,8 @@ class MasterController {
         //사운드 컨트롤러 생성
         this.soundController = new SoundController(this.sceneData);
 
+        this.activePassiveController = new ActivePassiveController(this.sceneData);
+
         // 게임 관련된 정보 저장 - 몬스터 킬 수, 타이머 저장 등 ㅇㅇ
         this.gameDataManager = new GameDataManager();
 
@@ -87,6 +90,7 @@ class MasterController {
         this.characterController.update();
         this.monsterController.update();
         this.weaponController.update();
+        this.activePassiveController.update();
     }
 
     updateStage() {
@@ -114,13 +118,14 @@ class MasterController {
 
     //첫무기를 웨펀컨트롤러에 추가
     setupAfterLoad(weaponName) {
-        this.weaponController.addWeapon("automaticRocketLauncher", 1);
+        /* this.weaponController.addWeapon("automaticRocketLauncher", 1);
         this.weaponController.addWeapon("automaticRocketLauncher", 1);
         this.weaponController.addWeapon("justSword", 2);
         this.weaponController.addWeapon("rocketLancer", 2);
         this.weaponController.addWeapon("rocketLancer", 3);
         this.weaponController.addWeapon("rocketLancer", 3);
-        this.weaponController.addWeapon("rocketLancer", 2);
+        this.weaponController.addWeapon("rocketLancer", 2); */
+        this.weaponController.addWeapon("justSword", 2);
     }
 
     getCharacterStatus() {
@@ -160,19 +165,20 @@ class MasterController {
         });
     }
 
-    updateItem(data) {
+    updateItem(data, grade) {
         // data 받은거 passives.json의 타입을 passive라고 하고 나서
         // 해당 data.type == passive 라면 패시브로
         // 아니라면 전부 무기로 보내는데 지금 코드는 웨폰 이름이니까
         // 이름을 보내도록
+        console.log(data);
         switch(true){
             case data.type == 'passive' :
                 if(data.activate){
-                    //this.characterController.characterStatus.updateStatus(data)
+                    this.activePassiveController.addPassive(data);
                 }
-                    this.characterController.characterStatus.updateStatus(data);
+                    this.characterController.characterStatus.updatePassiveStatus(data);
                 break;
-            default : this.weaponController.addWeapon(data.name);
+            default : this.weaponController.addWeapon(data.name, grade);
             break;
         }
         //this.characterController.characterStatus.updateStatus(data);

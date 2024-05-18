@@ -131,4 +131,4 @@ dist
 
 # We are Project
 
-# .assets/
+assets/*

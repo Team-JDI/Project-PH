@@ -5,14 +5,13 @@
         "type": "sword",
         "damageScale": 0.5,
         "rangeScale": 0.4,
-        "fireRate": 3000,
+        "fireRate": 1000,
         "tag": ["swordMaster"],
         "soundName": "swordeffect",
         "closestMonster": null,
         "lastFired": 0,
         "weaponScale": 0.4,
         "lastHitTime": 0,
-        "hitDelay": 300,
         "canActive": "false"
     },
     "woodenSword": {
@@ -21,7 +20,7 @@
         "type": "sword",
         "damageScale": 0.5,
         "rangeScale": 0.4,
-        "fireRate": 2000,
+        "fireRate": 800,
         "tag": ["greed", "assassin"],
         "soundName": "",
         "closestMonster": null,
@@ -35,7 +34,7 @@
         "type": "sword",
         "damageScale": 0.5,
         "rangeScale": 0.4,
-        "fireRate": 2000,
+        "fireRate": 1000,
         "tag": ["swordMaster", "swift"],
         "soundName": "",
         "closestMonster": null,
@@ -183,8 +182,8 @@
         "missileScale": 2,
         "missileSpeed": 100,
         "weaponScale": 0.8,
-        "missileName": "sniperBullet",
-        "missilePath": "assets/weapon/총알/sniperBullet.png"
+        "missileName": "공허대물저격총",
+        "missilePath": "assets/weapon/총알/공허대물저격총.png"
     },
     "kar98": {
         "name": "kar98",
@@ -200,8 +199,8 @@
         "missileScale": 0.3,
         "missileSpeed": 1000,
         "weaponScale": 0.8,
-        "missileName": "sniperBullet",
-        "missilePath": "assets/weapon/총알/sniperBullet.png"
+        "missileName": "kar98총알",
+        "missilePath": "assets/weapon/총알/kar98총알.png"
     },
     "crossbowGun": {
         "name": "crossbowGun",
@@ -217,8 +216,8 @@
         "missileScale": 0.8,
         "missileSpeed": 1000,
         "weaponScale": 1.5,
-        "missileName": "sniperBullet",
-        "missilePath": "assets/weapon/총알/sniperBullet.png"
+        "missileName": "작살",
+        "missilePath": "assets/weapon/총알/작살.png"
     },
     "beamShotgun": {
         "name": "beamShotgun",
@@ -234,8 +233,8 @@
         "missileScale": 0.8,
         "missileSpeed": 200,
         "weaponScale": 0.8,
-        "missileName": "공허대물저격총총알",
-        "missilePath": "assets/weapon/총알/sniperBullet.png"
+        "missileName": "레이저총알",
+        "missilePath": "assets/weapon/총알/레이저총알.png"
     },
     "rayGun": {
         "name": "rayGun",
@@ -251,8 +250,8 @@
         "missileScale": 0.8,
         "missileSpeed": 200,
         "weaponScale": 0.8,
-        "missileName": "rifleBullet",
-        "missilePath": "assets/weapon/총알/rifleBullet.png"
+        "missileName": "레이저총알",
+        "missilePath": "assets/weapon/총알/레이저총알.png"
     },
     "rifle": {
         "name": "rifle",
@@ -268,8 +267,8 @@
         "missileScale": 0.8,
         "missileSpeed": 200,
         "weaponScale": 0.8,
-        "missileName": "rifleBullet",
-        "missilePath": "assets/weapon/총알/rifleBullet.png"
+        "missileName": "소총총알",
+        "missilePath": "assets/weapon/총알/소총총알.png"
     },
     "eggGun": {
         "name": "eggGun",
@@ -284,7 +283,9 @@
         "lastFired": 0,
         "missileScale": 0.8,
         "missileSpeed": 200,
-        "weaponScale": 0.8
+        "weaponScale": 0.8,
+        "missileName": "알발사기",
+        "missilePath": "assets/weapon/총알/알발사기총알.png"
     },
     "flareGun": {
         "name": "flareGun",
@@ -331,13 +332,15 @@
         "lastFired": 0,
         "missileScale": 2,
         "missileSpeed": 1000,
-        "weaponScale": 0.8
+        "weaponScale": 0.8,
+        "missileName": "기관총총알",
+        "missilePath": "assets/weapon/총알/기관총총알.png"
     },
     "automaticRocketLauncher": {
         "name": "automaticRocketLauncher",
         "path": "assets/weapon/중화기/자동발사로켓런처.png",
         "type": "artillery-bomb",
-        "damageScale": 0.5,
+        "damageScale": 0,
         "rangeScale": 1.5,
         "fireRate": 3000,
         "tag": ["explosive", "instantlyToTheLord"],
@@ -364,7 +367,9 @@
         "lastFired": 0,
         "missileScale": 0.8,
         "missileSpeed": 200,
-        "weaponScale": 0.8
+        "weaponScale": 0.8,
+        "missileName": "exclusiveBullet",
+        "missilePath": "assets/weapon/총알/exclusiveBullet.png"
     },
     "rocketLancer": {
         "name": "rocketLancer",
@@ -373,7 +378,7 @@
         "damageScale": 0,
         "rangeScale": 0.4,
         "fireRate": 2000,
-        "tag": ["hawkeye", "soldier"],
+        "tag": ["hawkeye", "soldier", "swift"],
         "soundName": "",
         "closestMonster": null,
         "lastFired": 0,

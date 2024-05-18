@@ -588,5 +588,111 @@
         "grade" : "epic",
         "imagePath": "assets/item/혼돈의제물.png",
         "activate" : false
+    },
+    "body" : {
+        "name" : "body",
+        "type" : "passive",
+        "grade" : "nomal",
+        "coolDown" : 1000,
+        "imagePath" : "assets/item/body.png",
+        "activate" : true
+    },
+    "eyes" : {
+        "name" : "eyes",
+        "type" : "passive",
+        "grade" : "nomal",
+        "coolDown" : 1000,
+        "imagePath" : "assets/item/eyes.png",
+        "activate" : true
+    },
+    "hand" : {
+        "name" : "hand",
+        "type" : "passive",
+        "grade" : "nomal",
+        "coolDown" : 1000,
+        "imagePath" : "assets/item/hand.png",
+        "activate" : true
+    },"foot" : {
+        "name" : "foot",
+        "type" : "passive",
+        "grade" : "nomal",
+        "coolDown" : 500,
+        "imagePath" : "assets/item/foot.png",
+        "activate" : true
+    },
+    "healingTotem" : {
+        "name" : "healingTotem",
+        "type" : "passive",
+        "grade" : "nomal",
+        "coolDown" : 6000,
+        "imagePath" : "assets/item/healingTotem.png",
+        "activate" : true
+    },
+    "bombBall" : {
+        "name" : "bombBall",
+        "type" : "passive",
+        "grade" : "nomal",
+        "coolDown" : 1000,
+        "imagePath" : "assets/item/bombBall.png",
+        "activate" : true
+    },
+    "healingPack" : {
+        "name" : "healingPack",
+        "type" : "passive",
+        "grade" : "nomal",
+        "coolDown" : 3000,
+        "imagePath" : "assets/item/healingPack.png",
+        "activate" : true
+    },
+    "permeation" : {
+        "name" : "permeation",
+        "type" : "passive",
+        "grade" : "nomal",
+        "coolDown" : 5000,
+        "imagePath" : "assets/item/permeation.png",
+        "activate" : true
+    },
+    "edibleGems" : {
+        "name" : "edibleGems",
+        "type" : "passive",
+        "grade" : "nomal",
+        "coolDown" : 5000,
+        "imagePath" : "assets/item/edibleGems.png",
+        "activate" : true
+    },
+    "deadManSwitch" : {
+        "name" : "deadManSwitch",
+        "type" : "passive",
+        "grade" : "nomal",
+        "coolDown" : 5000,
+        "imagePath" : "assets/item/deadManSwitch.png",
+        "activate" : true
+    },
+    "flyingBeads" : {
+        "name" : "flyingBeads",
+        "type" : "passive",
+        "grade" : "nomal",
+        "coolDown" : 5000,
+        "imagePath" : "assets/item/flyingBeads.png",
+        "activate" : true
+    },
+    "gloomyDay" : {
+        "name" : "gloomyDay",
+        "type" : "passive",
+        "grade" : "nomal",
+        "coolDown" : 5000,
+        "imagePath" : "assets/item/gloomyDay.png",
+        "activate" : true
+    },
+    "merchant" : {
+        "name" : "merchant",
+        "type" : "passive",
+        "grade" : "nomal",
+        "coolDown" :3000,
+        "imagePath" : "assets/item/merchant.png",
+        "activate" : true
     }
+
+
+    
 }
