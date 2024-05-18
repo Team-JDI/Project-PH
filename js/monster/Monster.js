@@ -1,18 +1,22 @@
 class Monster extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, monsterInfo, player) {
+  constructor(scene, x, y, monsterInfo, player,stage) {
     super(scene, x, y, monsterInfo.spriteKey);
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
     this.player = player;
-
+    this.stage = stage;
     //기본 속성 초기화
     this.spriteKey = monsterInfo.spriteKey;
     this.animations = monsterInfo.animations;
-    this.health = monsterInfo.health || 100;
-    this.speed = monsterInfo.speed || 20;
-    this.scale = monsterInfo.scale || 1;
+    this.stat = this.growthInfo(monsterInfo,stage);
+    this.health = this.stat.health;
+    this.speed = this.stat.speed;
+    this.attack = this.stat.attack;
     this.lastSkillTime = 0;
-    this.skill = monsterInfo.skill || 0;
+    
+    this.skill = monsterInfo.skill || "none";
+    this.skillCool = monsterInfo.skillCool || 0;
+    this.skillDuration = monsterInfo.skillDuration || 0;
     this.type = monsterInfo.type || "nomal";
     this.attackRange = monsterInfo.attackRange || 300; // 공격 범위
     this.attackCooldown = monsterInfo.attackCooldown || 0; // 공격 쿨다운
@@ -22,41 +26,74 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
 
     this.reverseFlip = monsterInfo.reverseFlip || false;
 
-    this.setScale(this.scale);
+    this.setScale(monsterInfo.scale);
     this.setDepth(1);
     this.setupAnimations(); 
 
     //추가
     this.damageTimers = Array(6).fill(0);
   }
- 
+
+  growthInfo(monsterInfo, stage) {
+    let healthGrowthRate, speedGrowthRate, attackGrowthRate;
+
+    switch (monsterInfo.level) {
+      case 1:
+        healthGrowthRate = 0.05;
+        speedGrowthRate = 0.03;
+        attackGrowthRate = 0.04;
+        break;
+      case 2:
+        healthGrowthRate = 0.10;
+        speedGrowthRate = 0.05;
+        attackGrowthRate = 0.06;
+        break;
+      case 3:
+        healthGrowthRate = 0.15;
+        speedGrowthRate = 0.07;
+        attackGrowthRate = 0.08;
+        break;
+      default:
+        healthGrowthRate = 0.05;
+        speedGrowthRate = 0.03;
+        attackGrowthRate = 0.04;
+    }
+
+    return {
+      health: monsterInfo.health * Math.pow(1 + healthGrowthRate, stage),
+      speed: monsterInfo.speed * Math.pow(1 + speedGrowthRate, stage),
+      attack: (monsterInfo.attack || 10) * Math.pow(1 + attackGrowthRate, stage)
+    };
+  }
 
   setupAnimations() {
     Object.keys(this.animations).forEach(key => {
-      const anim = this.animations[key];
-      const fullAnimKey = this.spriteKey + '_' + key;
-      if (!this.scene.anims.exists(fullAnimKey)) {
-        this.scene.anims.create({
-          key: fullAnimKey,
-          frames: this.scene.anims.generateFrameNumbers(this.spriteKey, { 
-            start: anim.frames.start, 
-            end: anim.frames.end 
-          }),
-          frameRate: anim.framerate,
-          repeat: anim.repeat
-        });
-      }
+        const anim = this.animations[key];
+        if (anim && anim.frames && 'start' in anim.frames && 'end' in anim.frames) {
+            const fullAnimKey = this.spriteKey + '_' + key;
+            if (!this.scene.anims.exists(fullAnimKey)) {
+                this.scene.anims.create({
+                    key: fullAnimKey,
+                    frames: this.scene.anims.generateFrameNumbers(this.spriteKey, { 
+                        start: anim.frames.start, 
+                        end: anim.frames.end 
+                    }),
+                    frameRate: anim.framerate,
+                    repeat: anim.repeat
+                });
+            }
+        } else {
+            console.error(`Animation data for key ${key} is incomplete:`, anim);
+        }
     });
+    
     this.play(this.spriteKey + '_move');
   }
 
+
   update() {
-    if(this.type === "ghost"){
-      if (this.scene.time.now > this.lastSkillTime  + this.skill) {
-        this.Vanishing();
-        this.lastSkillTime  = this.scene.time.now;
-      }
-    }
+    if (this.skill != "none" && this.skill != "explosion") this.checkSkill();
+
     const speed = this.speed;
     // 플레이어와 몬스터 사이의 거리를 계산합니다.
     const dx = this.player.x - this.x;
@@ -67,7 +104,7 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
     this.setVelocity((dx / distance) * speed, (dy / distance) * speed);
     if(this.attackCooldown != 0){
       if (distance <= this.attackRange && !this.isAttacking && this.scene.time.now > this.lastAttackTime + this.attackCooldown) {
-        this.attack();
+        this.attacking();
       }
     }
 
@@ -76,9 +113,18 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
     } else {
         this.setFlipX(this.player.x < this.x);
     }
+
+    //자폭 스킬 로직
+    if (distance <= this.attackRange && !this.isExploded) {
+      if (this.skill === "explosion") {
+          this.explosion(); // 폭발 스킬을 실행합니다.
+          this.isExploded = true; // 폭발 실행 상태를 true로 설정합니다.
+      }
   }
 
-  attack() {
+  }
+
+  attacking() {
     this.isAttacking = true;
     this.lastAttackTime = this.scene.time.now;
     this.play(this.spriteKey + '_attack');
@@ -134,18 +180,6 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
     if (this.blinkTimer) {
       this.blinkTimer.remove(); // 깜빡임 타이머 제거
     }
-  }
-
-  //몬스터 은신기능
-  Vanishing() {
-    this.setVisible(false); // 몬스터를 화면에서 숨김
-    this.isVanishing = true; // Vanishing 상태로 설정
-
-    // 일정 시간 후에 몬스터를 다시 나타나게 함
-    this.scene.time.delayedCall(800, () => {
-        this.setVisible(true); // 몬스터를 다시 보이게 함
-        this.isVanishing = false; // Vanishing 상태 해제
-    });
   }
 
   hit(damage, weaponIndex, absorption) {
@@ -229,18 +263,183 @@ class Monster extends Phaser.Physics.Arcade.Sprite {
 
     //몬스터 죽은 횟수 올리기
     this.scene.masterController.gameDataManager.updateMonstersKilled();
-
-    // 경험치 구슬 생성
-    for (let i = 0; i < 2; i++) {
-      const expBead = new ExpBead(this.scene, this.x, this.y);
-      this.scene.masterController.monsterController.expBeadsGroup.add(expBead);
+    if(this.spriteKey != "Lv3_0002-2"){
+      // 경험치 구슬 생성
+      for (let i = 0; i < 2; i++) {
+        const expBead = new ExpBead(this.scene, this.x, this.y);
+        this.scene.masterController.monsterController.expBeadsGroup.add(expBead);
+      }
+      // 확률적으로 보너스 상자 생성
+      if (Math.random() <= boxRate) {
+        const bonusBox = new BonusBox(this.scene, this.x, this.y);
+        this.scene.masterController.monsterController.bonusBoxGroup.add(bonusBox);
+      }
     }
-    // 확률적으로 보너스 상자 생성
-    if (Math.random() <= boxRate) {
-      const bonusBox = new BonusBox(this.scene, this.x, this.y);
-      this.scene.masterController.monsterController.bonusBoxGroup.add(bonusBox);
+    if (this.spriteKey === 'Lv3_0002') {
+      this.spawnSurroundingMonsters();
     }
 
     this.destroy();
+  }
+
+  spawnSurroundingMonsters() {
+    const spawnCount = 5; // 소환할 몬스터의 수
+    const spawnRadius = 100; // 소환 반경 (픽셀 단위)
+    const verticalSpeed = 300;
+
+    // 소환할 몬스터 정보 로드
+    const monsterData = this.scene.cache.json.get('monsterData')['Lv3_0002-2'];
+
+    for (let i = 0; i < spawnCount; i++) {
+        // 사망 위치 주변에서 랜덤 위치 계산
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * spawnRadius;
+        const x = this.x + distance * Math.cos(angle);
+        const y = this.y + distance * Math.sin(angle);
+
+        // 몬스터 생성 및 그룹에 추가
+        const newMonster = new Monster(this.scene, x, y, monsterData, this.player);
+        this.scene.masterController.monsterController.monstersGroup.add(newMonster);
+
+        this.scene.physics.world.enable(newMonster);
+        newMonster.body.setVelocity(
+            Math.cos(angle) * verticalSpeed, // 수평 속도
+            Math.sin(angle) * verticalSpeed - 400 // 수직 속도 (위로 투사)
+        );
+        newMonster.body.setGravityY(500);
+    }
+  }
+  //스킬 적용 부분
+  checkSkill() {
+    if (this.scene.time.now > this.lastSkillTime + this.skillCool) {
+        this.executeSkill(this.skill);
+        this.lastSkillTime = this.scene.time.now;
+    }
+  }
+
+  //스킬 적용 스위치문
+  executeSkill(skillName) {
+    switch(skillName) {
+        case 'vanish':
+            this.vanish();
+            break;
+        case 'dash':
+            this.dash();
+            break;
+        case 'explosion':
+            this.explosion();
+            break;
+        default:
+            console.log(skillName);
+    }
+  }
+
+  //스킬 모음집
+  vanish() {
+    this.isVanishing = true; // Vanishing 상태로 설정
+  
+    // 가시성을 주기적으로 토글합니다
+    this.blinkEvent = this.scene.time.addEvent({
+      delay: 400,  // 깜빡임 간격을 짧게 설정
+      callback: () => {
+        this.setVisible(!this.visible); // 스프라이트 가시성을 토글
+      },
+      callbackScope: this,
+      loop: true
+    });
+  
+    // 지정된 스킬 지속 시간 후에 깜빡임을 중지하고 가시성을 복원
+    this.scene.time.delayedCall(this.skillDuration, () => {
+      this.blinkEvent.remove(); // 깜빡임 이벤트 제거
+      this.setVisible(true);    // 몬스터를 다시 보이게 함
+      this.isVanishing = false; // Vanishing 상태 해제
+    });
+  }
+  
+  //대쉬
+  dash(){
+    this.originalSpeed = this.speed;
+    this.speed *= 1.8;
+
+    const dashAnimKey = this.spriteKey + '_dash';
+    if (this.scene.anims.exists(dashAnimKey)) {
+        this.play(this.spriteKey + '_dash');
+    } else {
+        this.setTint(0x00ff00); // 녹색으로 색상 변경
+    }
+
+    this.dashTimer = this.scene.time.delayedCall(this.skillDuration, () => {
+      if (!this.scene || this.scene.sys.isDestroyed) return; 
+      this.speed = this.originalSpeed;
+
+      if (!this.scene.anims.exists(dashAnimKey)) {
+          this.clearTint(); // 색상 효과 제거
+      }
+      if (this.active) {
+          this.play(this.spriteKey + '_move');
+      }
+    });
+  }
+
+  //자폭
+  explosion() {
+    const explosionDamage = this.health * 0.2;
+    const explosionAnimKey = this.spriteKey + '_explosion';
+
+    // 폭발 안내용 붉은색 깜빡임 시작
+    this.startBlinking();
+
+    // 폭발 딜레이 설정 (2초 후 폭발)
+    this.scene.time.delayedCall(2000, () => {
+        if (this.scene.anims.exists(explosionAnimKey)) {
+            this.play(explosionAnimKey);
+            this.once('animationcomplete', animation => {
+                if (animation.key === explosionAnimKey) {
+                    this.applyExplosionDamage(explosionDamage); // 폭발 피해 적용
+                    this.destroy(); // 몬스터 제거
+                }
+            });
+        } else {
+            console.log("폭발 애니메이션이 설정되지 않았습니다. 이펙트 추가 예정");
+            this.stopBlinking(); // 깜빡임 중지
+        }
+    });
+}
+
+
+  applyExplosionDamage(damage) {
+    // 폭발 범위 계산: 기본 범위 * 몬스터의 스케일
+    const explosionRadius = 100 * this.scaleX;
+    const explosionArea = new Phaser.Geom.Circle(this.x, this.y, explosionRadius);
+
+    this.scene.physics.overlap(explosionArea, this.scene.players, (explosionArea, player) => {
+        // 플레이어에게 피해 적용
+        this.setScale(this.monsterInfo.scale*2);
+        if (player instanceof Player) { // Player 클래스의 인스턴스인지 확인
+          this.scene.masterController.characterController.characterStatus.takeDamage(damage);
+        }
+    });
+  }
+
+  // 깜빡이는 효과 시작
+  startBlinking() {
+    this.isBlinking = true;
+    this.blinkEvent = this.scene.time.addEvent({
+        delay: 100, // 100밀리초 간격으로 색상 변경
+        callback: () => {
+            // 색상을 변경하거나 원래 상태로 복구
+            this.setTint(this.isBlinking ? 0xff0000 : 0xffffff); // 빨간색 또는 원래색
+            this.isBlinking = !this.isBlinking; // 깜빡임 상태 토글
+        },
+        loop: true
+    });
+  }
+
+  // 깜빡이는 효과 중지
+  stopBlinking() {
+    if (this.blinkEvent) {
+        this.blinkEvent.remove(); // 이벤트 제거
+        this.setTint(0xffffff); // 색상을 원래대로
+    }
   }
 }

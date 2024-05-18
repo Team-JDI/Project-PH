@@ -3,7 +3,8 @@
     "spriteKey": "Lv1_0001",
     "scale": 1,
     "health":20,
-    "speed":60,
+    "attack":5,
+    "speed":40,
     "attackRange": 500,
     "attackCooldown":3000,
     "frameWidth": 72,
@@ -19,7 +20,8 @@
     "spriteKey": "Lv1_0002",
     "scale": 2,
     "health":20,
-    "speed":50,
+    "attack":10,
+    "speed":30,
     "frameWidth": 16,
     "frameHeight": 16,
     "animations": {
@@ -27,10 +29,39 @@
     },
     "level" : 1
   },
+  "Lv1_0003":{
+    "spriteKey": "Lv1_0003",
+    "scale": 2,
+    "health":20,
+    "attack":5,
+    "speed":40,
+    "frameWidth": 17,
+    "frameHeight": 17,
+    "animations": {
+      "move": { "frames": { "start": 0, "end": 7 }, "framerate": 3, "repeat": -1 }
+    },
+    "level" : 1
+  },
+  "Lv1_0004":{
+    "spriteKey": "Lv1_0004",
+    "scale": 2,
+    "health":20,
+    "attack":5,
+    "speed":60,
+    "frameWidth": 12,
+    "frameHeight": 12,
+    "reverseFlip": true,
+    "animations": {
+      "move": { "frames": { "start": 0, "end": 1 }, "framerate": 3, "repeat": -1 }
+    },
+    "level" : 1
+  },
+  
   "Lv2_0001":{
     "spriteKey": "Lv2_0001",
     "scale": 1.5,
     "health":20,
+    "attack":13,
     "speed":70,
     "frameWidth": 30,
     "frameHeight": 25,
@@ -41,9 +72,12 @@
   },
   "Lv2_0002":{
     "spriteKey": "Lv2_0002",
-    "skill" : 3000,
+    "skill" : "vanish",
+    "skillCool" : 5000,
+    "skillDuration": 2500,
     "scale": 1.5,
     "health":50,
+    "attack":8,
     "speed":100,
     "type":"ghost",
     "reverseFlip": true,
@@ -54,15 +88,84 @@
     },
     "level" : 2
   },
+  "Lv2_0003":{
+    "spriteKey": "Lv2_0003",
+    "skill":"dash",
+    "skillCool" : 10000,
+    "skillDuration": 3000,
+    "scale": 1.5,
+    "health":50,
+    "attack":14,
+    "speed":90,
+    "frameWidth": 32,
+    "frameHeight": 24,
+    "reverseFlip": true,
+    "animations": {
+      "move": { "frames": { "start": 1, "end": 3 }, "framerate": 5, "repeat": -1 },
+      "dash" : { "frames": {"start":4,"end":7},"framerate":10,"repeat":-1} 
+    },
+    "level" : 2
+  },
+  "Lv2_0004":{
+    "spriteKey": "Lv2_0004",
+    "skill":"explosion",
+    "skillCool" : 3000,
+    "scale": 1.5,
+    "health":50,
+    "attack":10,
+    "speed":100,
+    "attackRange": 30,
+    "frameWidth": 32,
+    "frameHeight": 24,
+    "reverseFlip": true,
+    "animations": {
+      "move": { "frames": { "start": 0, "end": 2 }, "framerate": 5, "repeat": -1 },
+      "explosion": { "frames": { "start": 3, "end": 9 }, "framerate": 5, "repeat": 0 }
+    },
+    "level" : 2
+  },
   "Lv3_0001":{
     "spriteKey": "Lv3_0001",
     "scale": 2.5,
-    "health":20,
+    "health":200,
+    "attack":18,
     "speed":30,
     "frameWidth": 30,
     "frameHeight": 32,
     "animations": {
       "move": { "frames": { "start": 0, "end": 2 }, "framerate": 3, "repeat": -1 }
+    },
+    "level" : 3
+  },
+  "Lv3_0002":{
+    "spriteKey": "Lv3_0002",
+    "scale": 2.5,
+    "health":200,
+    "attack":30,
+    "speed":0.2,
+    "frameWidth": 32,
+    "frameHeight": 26,
+    "reverseFlip": true,
+    "animations": {
+      "move": { "frames": { "start": 0, "end": 13 }, "framerate": 3, "repeat": -1 }
+    },
+    "level" : 3
+  },
+  "Lv3_0002-2":{
+    "spriteKey": "Lv2_0004",
+    "skill": "explosion",
+    "skillColl" : 1000,
+    "scale": 1.5,
+    "health":150,
+    "attack":20,
+    "speed":100,
+    "attackRange": 30,
+    "frameWidth": 32,
+    "frameHeight": 24,
+    "reverseFlip": true,
+    "animations": {
+      "move": { "frames": { "start": 0, "end": 2 }, "framerate": 5, "repeat": -1 },
+      "explosion": { "frames": { "start": 3, "end": 9 }, "framerate": 5, "repeat": 0 }
     },
     "level" : 3
   }

@@ -5,6 +5,8 @@ class ItemSelectionScene extends Phaser.Scene {
         this.selectedRewardIndex = -1;
         this.selectedItems = [];
         this.itemsData = [];    // json배열 저장
+        this.weaponData = [];
+        this.combinedData =[]
         this.characterStatus;
         this.weapons;
         this.passives;
@@ -19,11 +21,13 @@ class ItemSelectionScene extends Phaser.Scene {
 
     preload() {
         this.load.json('passives', 'js/character/passives.json');
-        
+        this.load.json('weapon', 'js/character/weapon.json');
     }
 
     create(data) {
-        const overlay = this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x240839, 1);
+        // 씬 배경
+        // 후보1 : 0xA30FE2, 후보2 : 0x800080, 후보3 : 0x834683, 후보4 : 0x4B0082
+        const overlay = this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x4B0082, 1);
 
         overlay.setOrigin(0);
 
@@ -47,6 +51,7 @@ class ItemSelectionScene extends Phaser.Scene {
         this.createSelectionButton();
 
         this.itemsData = this.cache.json.get('passives');
+        this.weaponData = this.cache.json.get('weapon');
 
         this.loadItemImage();
 
@@ -68,12 +73,20 @@ class ItemSelectionScene extends Phaser.Scene {
 
     loadItemImage(){
         const itemsData = this.itemsData;
+        const weaponData = this.weaponData;
 
         // 각 아이템의 이미지 preload
         for (const itemKey in itemsData) {
             const item = itemsData[itemKey];
             if (item.imagePath) {
                 this.load.image(item.name, item.imagePath);
+            }
+        }
+
+        for(const weaponKey in weaponData){
+            const weapon = weaponData[weaponKey];
+            if (weapon.path){
+                this.load.image(weapon.name,weapon.path);
             }
         }
     }
@@ -88,8 +101,13 @@ class ItemSelectionScene extends Phaser.Scene {
     }
 
     displayRewardObjects() {
+        //무기 배열 더하기
         const itemsData = this.itemsData;
-        const itemKeys = Object.keys(itemsData);
+        const weaponData = this.weaponData;
+
+        //배열 결합
+        this.combinedData = { ...itemsData, ...weaponData };
+        const itemKeys = Object.keys(this.combinedData);
         
         Phaser.Utils.Array.Shuffle(itemKeys);
         
@@ -97,7 +115,7 @@ class ItemSelectionScene extends Phaser.Scene {
         this.selectedItems = selectedItems;
         
         selectedItems.forEach((itemName, index) => {
-            const item = itemsData[itemName];
+            const item = this.combinedData[itemName];
             const x = this.cameras.main.width * 0.1 + (index * this.cameras.main.width * 0.2);
             const y = this.cameras.main.width * 0.1;
             const itemImage = this.add.image(x, y, item.name);
@@ -178,7 +196,7 @@ class ItemSelectionScene extends Phaser.Scene {
             const selectedItemIndex = this.selectedRewardIndex;
             const selectedItemKey = this.selectedItems[selectedItemIndex];
 
-            const selectedItem = this.itemsData[selectedItemKey];
+            const selectedItem = this.combinedData[selectedItemKey];
 
             this.masterController.updateItem(selectedItem);
 

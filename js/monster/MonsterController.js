@@ -6,10 +6,12 @@ class MonsterController {
         this.expBeadsGroup = scene.physics.add.group(); // 경험치 그룹생성
         this.bonusBoxGroup = scene.physics.add.group(); // 상자 그룹생성
         this.monsterTimer = 0;
+        this.stageNum = 1;
+        this.stageStartTime = this.startTime();
         this.spawnDelay = this.calculateSpawnDelay(this.stageNum); // stage마다 줄어드는 스폰 딜레이
+        this.stageDuration = this.getStageDuration(this.stageNum);
         this.circlePatternTimer = 0; //몬스터 원형 패턴
         this.player = player;
-        this.stageNum = 1;
         this.monsterRatio = this.calculateMonsterRatios(this.stageNum); // stage배율 받는 몬스터 스폰 로직
         this.stageMonster = this.calculateTotalMonsters(this.stageNum); //stage마다 증가하는 몬스터 수
         this.monsterCounts = [0,0,0];
@@ -17,8 +19,11 @@ class MonsterController {
         this.stateMonsterLevel = 0;
         //this.createBoss();
 
+        this.temp = 1;
+
         this.divisions = 4; // 맵을 4x4로 분할한다고 가정
 
+        this.setupSpawner();
         this.setupCollisions();
 
         this.lastPlayerPosition = { x: null, y: null };
@@ -29,6 +34,37 @@ class MonsterController {
         // 보스의 타입 목록
         this.bossTypes = ['metalNight', 'eggMan'];
     }
+
+    startTime(){
+        return this.scene.time.now;
+    }
+
+    setupSpawner() {
+        this.spawnEvent = this.scene.time.addEvent({
+            delay: this.spawnDelay,
+            callback: () => {
+                // 스테이지 종료 2초 전에는 몬스터를 소환하지 않습니다.
+                if (this.getRemainingTime() > 2000) {
+                    this.createMonster(this.i);
+                    this.spawnTestMonster('Lv3_0002');
+                }
+            },
+            callbackScope: this,
+            loop: true
+        });
+    }
+
+    getRemainingTime() {
+        const elapsedTime = this.scene.time.now - this.stageStartTime;
+        return this.stageDuration - elapsedTime;
+    }
+
+    //스테이지 지속시간
+    getStageDuration(stage){
+        return (5+(stage*5))*1000;
+    }
+
+
 
     // 스테이지 몬스터 소환 딜레이
     calculateSpawnDelay(stageNum) {
@@ -67,7 +103,6 @@ class MonsterController {
         return baseRatio.map(x => x / total * 10);
     }
     
-
     
     getRandomSpawnPosition() {
         this.mapWidth = this.scene.game.imageWidth;
@@ -174,14 +209,28 @@ class MonsterController {
         monsterInfo.speed = speed;
 
         this.scene.masterController.effectController.playEffectAnimation(x,y,'effect');
-        const monster = new Monster(this.scene, x, y, monsterInfo, this.player); // 항상 0001 유형의 몬스터 생성
+        const monster = new Monster(this.scene, x, y, monsterInfo, this.player,this.stageNum); // 항상 0001 유형의 몬스터 생성
+        this.monstersGroup.add(monster);
+        this.scene.physics.add.collider(this.monstersGroup, monster);
+
+    }
+
+    //test용 스폰 몬스터 설정
+    spawnTestMonster(spriteKey) {
+        const x = this.scene.sys.game.config.width / 2;
+        const y = this.scene.sys.game.config.height / 2;
+        // 몬스터 정보 가져오기
+        const monsterData = this.getMonsterInfoBySpriteKey(spriteKey);
+
+        // 지정된 위치에 몬스터 생성
+        const monster = new Monster(this.scene, x, y, monsterData, this.player,this.stageNum);
         this.monstersGroup.add(monster);
         this.scene.physics.add.collider(this.monstersGroup, monster);
 
     }
 
     // 몬스터 생성 메서드
-    createMonster() {
+    createMonster(i) {
         const totalMonsters = this.stageMonster; // 스테이지별 총 몬스터 수
         const ratio = this.monsterRatio; // 레벨별 생성 비율
         let targetCounts = ratio.map(r => Math.floor(totalMonsters * (r / ratio.reduce((a, b) => a + b))));
@@ -208,7 +257,7 @@ class MonsterController {
     
         setTimeout(() => {
             this.scene.masterController.effectController.playEffectAnimation(posX,posY,'effect');
-            const monster = new Monster(this.scene, posX, posY, monsterInfo, this.player);
+            const monster = new Monster(this.scene, posX, posY, monsterInfo, this.player,this.stageNum);
             this.monstersGroup.add(monster);
             this.scene.physics.add.collider(this.monstersGroup, monster);
             this.nowMonsterNum++;
@@ -235,19 +284,25 @@ class MonsterController {
     
 
     update() {
-        this.circlePatternTimer++;
+        if(this.temp == this.stageNum){
+            this.temp++;
+            this.stageStartTime = this.startTime();
+        }
+        //소환 패턴
+        // if (this.getTimer() == this.spawnTime ) {
+        //     this.monsterTimer = 0;
+        //     this.createMonster(); // 몬스터 추가
 
-        if (this.monsterTimer > 60) {
-            this.monsterTimer = 0;
-            this.createMonster(); // 몬스터 추가
-        }
-        //4초마다 원형 패턴 몬스터 생성
-        if (this.circlePatternTimer > 240) {
-            this.circlePatternTimer = 0;
-            if(this.stageNum == 5){
-                this.createCirclePatternMonster(); // 원형 패턴 몬스터 생성
-            }
-        }
+        //     if (this.getTimer()/4 == this.spawnTime) {
+        //         this.circlePatternTimer = 0;
+        //         if(this.stageNum == 5){
+        //             this.createCirclePatternMonster(); // 원형 패턴 몬스터 생성
+        //         }
+        //     }
+
+        //     this.spawnTime++;
+        // }
+        
 
         // 몬스터 그룹의 몬스터들을 갱신합니다.
         this.monstersGroup.children.each(monster => {
@@ -268,10 +323,7 @@ class MonsterController {
 
     updateStage(stageNum) {
         this.stageNum = stageNum;
-
-        this.allMonsterDestroy();
-        this.allMissileDestroy();
-        this.allExpBeadDestroy();
+        this.resetStage();
 
         // 업데이트 되면 다음 스테이지로 넘어간거니 초기화
         this.stateMonsterLevel = 0;
@@ -313,19 +365,12 @@ class MonsterController {
         return boss;
     }
 
-    allMonsterDestroy() {
+
+    //스테이지 초기화 시키기
+    resetStage(){
         this.monstersGroup.clear(true, true);
-        
-    }
-
-    allMissileDestroy() {
-        // 미사일 그룹 만들어주세용
         this.missilesGroup.clear(true, true);
-    }
 
-    allExpBeadDestroy(){
-
-        // 이게 개수인데 아직은 경험치가 1짜리인것만 있으므로 1* exp 개수
         let exp = this.expBeadsGroup.getChildren().length;
 
         this.expBeadsGroup.clear(true, true);
@@ -336,7 +381,7 @@ class MonsterController {
 
         // 받아온 경험치 구슬 그룹 수를 반환한거 가지고 계산 전체 exp 전달
         this.scene.masterController.characterController.characterStatus.getExp(exp);
-  
+
     }
 
     //위치 받기용 추가 함수
