@@ -170,7 +170,6 @@ class MasterController {
         // 해당 data.type == passive 라면 패시브로
         // 아니라면 전부 무기로 보내는데 지금 코드는 웨폰 이름이니까
         // 이름을 보내도록
-        console.log(data);
         switch(true){
             case data.type == 'passive' :
                 if(data.activate){
